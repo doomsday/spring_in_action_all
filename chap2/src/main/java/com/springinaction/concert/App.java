@@ -1,4 +1,4 @@
-package com.springinaction.soundsystem;
+package com.springinaction.concert;
 
 /**
  * Aspect-oriented Spring.
