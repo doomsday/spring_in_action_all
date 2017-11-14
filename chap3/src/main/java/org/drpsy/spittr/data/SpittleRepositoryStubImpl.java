@@ -2,7 +2,6 @@ package org.drpsy.spittr.data;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.time.DateUtils;
 import org.drpsy.spittr.Spittle;
@@ -36,9 +35,15 @@ public class SpittleRepositoryStubImpl implements SpittleRepository {
   }
 
   @Override
-  public Spittle findOne(long id) throws ParseException {
+  public Spittle findOne(long id) {
     String datePattern = "yyyy-MM-dd";
-    return new Spittle("Spittles go fourth!",
+    Spittle spittle = null;
+    
+    try {
+    spittle = new Spittle("Spittles go fourth!",
         DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0);
+    } catch (ParseException ignored) {}
+
+    return spittle;
   }
 }
