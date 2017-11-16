@@ -20,13 +20,13 @@ public class SpittleRepositoryStubImpl implements SpittleRepository {
 
     try {
 
-      spittleList.add(1, new Spittle("Spittles go fourth!",
+      spittleList.add(new Spittle(1L, "Spittles go fourth!",
           DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0));
-      spittleList.add(2, new Spittle("Spittle spittle spittle",
+      spittleList.add(new Spittle(2L, "Spittle spittle spittle",
           DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0));
-      spittleList.add(3, new Spittle("Here's another spittle",
+      spittleList.add(new Spittle(3L, "Here's another spittle",
           DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0));
-      spittleList.add(4,new Spittle("Hello world! The first ever spittle!",
+      spittleList.add(new Spittle(4L, "Hello world! The first ever spittle!",
           DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0));
 
     } catch (ParseException ignored) {}
@@ -38,7 +38,7 @@ public class SpittleRepositoryStubImpl implements SpittleRepository {
   public Spittle findOne(long id) {
     String datePattern = "yyyy-MM-dd";
     Spittle spittle = null;
-    
+
     try {
     spittle = new Spittle("Spittles go fourth!",
         DateUtils.parseDate("2013-09-01", datePattern), 0.0, 0.0);

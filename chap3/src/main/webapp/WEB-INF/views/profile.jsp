@@ -2,15 +2,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false" %>
 <html>
 <head>
-    <title>Spitter</title>
+    <title>Spittr</title>
     <link rel="stylesheet"
           type="text/css"
-          href="<c:url value="/resources/css/style.css" />">
+          href="<c:url value="/resources/css/style.css" />"/>
 </head>
 <body>
+<h1>Your Profile</h1>
 
-<h1>Welcome to Spitter</h1>
-<a href="<c:url value = "/spittles"/>">Spittles</a> |
-<a href="<c:url value="/spitter/register" />">Register</a>
+<c:out value="${spitter.userName}"/><br/>
+<c:out value="${spitter.firstName}"/>
+<c:out value="${spitter.lastName}"/>
+
 </body>
 </html>

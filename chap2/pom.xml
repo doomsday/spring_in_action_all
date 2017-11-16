@@ -24,6 +24,7 @@
         </configuration>
       </plugin>
     </plugins>
+    <finalName>chap_two</finalName>
   </build>
 
   <name>chap_two</name>

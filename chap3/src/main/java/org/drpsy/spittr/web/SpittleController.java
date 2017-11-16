@@ -2,7 +2,6 @@ package org.drpsy.spittr.web;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-import java.text.ParseException;
 import org.drpsy.spittr.data.SpittleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +39,7 @@ public class SpittleController {
   public String spittle(
       @PathVariable("spittleId") long spittleId, // PathVariable value can be omitted if the placeholder's name is the
       // same as the method parameter name.
-      Model model) throws ParseException {
+      Model model) {
     model.addAttribute(spittleRepository.findOne(spittleId)); // Model key will be spittle, inferred by the type
     // passed in 'addAttribute'.
     return "spittle";
