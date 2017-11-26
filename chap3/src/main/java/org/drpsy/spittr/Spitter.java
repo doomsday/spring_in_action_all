@@ -1,6 +1,7 @@
 package org.drpsy.spittr;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,20 +14,28 @@ public class Spitter {
   private Long id;
 
   @NotNull
-  @Size(min = 2, max = 30)
+  @Size(min = 2, max = 30, message = "{firstName.size}")
   private String firstName;
 
   @NotNull
-  @Size(min = 2, max = 30)
+  @Size(min = 2, max = 30, message = "{lastName.size}")
   private String lastName;
 
   @NotNull
-  @Size(min = 5, max = 16)
+  @Size(min = 5, max = 16, message = "{userName.size}")
   private String userName;
 
   @NotNull
-  @Size(min = 5, max = 25)
+  @Size(min = 5, max = 25, message = "{password.size}")
   private String password;
+
+  @NotNull
+  @Pattern(regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\"
+      + "x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]"
+      + "*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25"
+      + "[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-"
+      + "\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", message = "{email.valid}")
+  private String email;
 
   public Spitter() {}
 
@@ -80,6 +89,14 @@ public class Spitter {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   @Override

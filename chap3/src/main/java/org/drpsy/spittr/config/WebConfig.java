@@ -1,8 +1,10 @@
 package org.drpsy.spittr.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -26,6 +28,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     resolver.setPrefix("/WEB-INF/views/");
     resolver.setSuffix(".jsp");
     resolver.setExposeContextBeansAsAttributes(true); // Make all such beans accessible in plain ${...}
+    resolver.setViewClass(
+        org.springframework.web.servlet.view.JstlView.class); // resolve JstlView instead of InternalResourceView
     return resolver;
   }
 
@@ -42,6 +46,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     registry
         .addResourceHandler("resources/**") // External facing URI path...
         .addResourceLocations("/resources/"); // map it to the physical path where the resources are actually located.
+  }
+
+  @Bean
+  public MessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasename("messages");
+    return messageSource;
   }
 
 }

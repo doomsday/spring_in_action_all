@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false" %>
 <html>
 <head>
@@ -7,29 +9,49 @@
           type="text/css"
           href="<c:url value="/resources/css/style.css" />"/>
 </head>
+<style>
+    div.errors {
+        background-color: #ffcccc;
+        border: 1px solid red;
+    }
+    input.error {
+        background-color: #ffcccc;
+    }
+    label.error {
+        color: red;
+    }
+</style>
 <body>
 <h1>Register</h1>
 
 <%-- Form tag doesn't have an action parameter set. Because of that, when this form is submitted, it will be posted --%>
 <%-- back to the same URL path that displayed it. That is, it will be posted back to '/spitters/register'. --%>
-<form method="post">
+<sf:form method="POST" commandName="spitter">
+    <sf:errors path="*" element="div" cssClass="errors"/>
 
-    <label for="firstName">First name:</label>
-    <input type="text" id="firstName" name="firstName"/><br/>
+    <sf:label path="firstName" cssErrorClass="error">First name:</sf:label>
+    <sf:input path="firstName" cssErrorClass="error"/>
+    <br/>
 
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName"/><br/>
+    <sf:label path="lastName" cssErrorClass="error">Last name:</sf:label>
+    <sf:input path="lastName" cssErrorClass="error"/>
+    <br/>
 
-    <label for="userName">Username:</label>
-    <input type="text" id="userName" name="userName"/><br/>
+    <sf:label path="userName" cssErrorClass="error">User name:</sf:label>
+    <sf:input path="userName" cssErrorClass="error"/>
+    <br/>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password"/><br/>
+    <sf:label path="email" cssErrorClass="error">Email:</sf:label>
+    <sf:input path="email" cssErrorClass="error"/>
+    <br/>
 
-    <label for="submit">Password:</label>
-    <input type="submit" id="submit" value="Register"/><br/>
+    <sf:label path="password" cssErrorClass="error">Password:</sf:label>
+    <sf:password path="password" cssErrorClass="error"/>
+    <br/>
 
-</form>
+    <input type="submit" value="Register"/><br/>
+
+</sf:form>
 
 </body>
 </html>

@@ -38,7 +38,8 @@ public class SpitterController {
   }
 
   @RequestMapping(value = "/register", method = GET)
-  public String showRegistrationForm() {
+  public String showRegistrationForm(Model model) {
+    model.addAttribute(new Spitter());  // Model key will be inferred from the object type: "spitter".
     return "registerForm";
   }
 
