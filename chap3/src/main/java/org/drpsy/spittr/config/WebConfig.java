@@ -11,6 +11,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 /**
  * Created by drpsy on 10-Nov-17 (18:45).
@@ -20,17 +22,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("org.drpsy.spittr.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-  // DispatcherServlet consults a view resolver to map the logical view name
-  // received from controller to a specific view implementation.
   @Bean
   public ViewResolver viewResolver() {
-    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-    resolver.setPrefix("/WEB-INF/views/");
-    resolver.setSuffix(".jsp");
-    resolver.setExposeContextBeansAsAttributes(true); // Make all such beans accessible in plain ${...}
-    resolver.setViewClass(
-        org.springframework.web.servlet.view.JstlView.class); // resolve JstlView instead of InternalResourceView
-    return resolver;
+    return new TilesViewResolver();
   }
 
   // Configure static content handler: forward requests for static resources to
@@ -48,11 +42,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         .addResourceLocations("/resources/"); // map it to the physical path where the resources are actually located.
   }
 
+  // Loads messages from a properties file whose name is derived from a base name.
   @Bean
   public MessageSource messageSource() {
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasename("messages");
     return messageSource;
   }
+
+  // Locates and loads tile definitions and generally coordinate Tiles.
+  @Bean
+  public TilesConfigurer tilesConfigurer() {
+    TilesConfigurer tiles = new TilesConfigurer();
+    tiles.setDefinitions("WEB-INF/layout/tiles.xml"); // Specify tile definition locations.
+    tiles.setCheckRefresh(true);  // Enable refresh.
+    return tiles;
+  }
+
+
 
 }

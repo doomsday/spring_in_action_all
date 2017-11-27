@@ -1,0 +1,5 @@
+<definition name="home" template="/WEB-INF/layout/page.jsp">
+  <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+  <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+  <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+</definition>

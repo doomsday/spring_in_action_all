@@ -1,14 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ page session="false" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" session="false" %>
-<html>
-<head>
-    <title>Spittr</title>
-    <link rel="stylesheet"
-          type="text/css"
-          href="<c:url value="/resources/css/style.css" />"/>
-</head>
 <style>
     div.errors {
         background-color: #ffcccc;
@@ -21,11 +14,13 @@
         color: red;
     }
 </style>
-<body>
+
 <h1>Register</h1>
 
 <%-- Form tag doesn't have an action parameter set. Because of that, when this form is submitted, it will be posted --%>
 <%-- back to the same URL path that displayed it. That is, it will be posted back to '/spitters/register'. --%>
+
+<%--@elvariable id="spitter" type="org.drpsy.spittr.Spitter"--%>
 <sf:form method="POST" commandName="spitter">
     <sf:errors path="*" element="div" cssClass="errors"/>
 
@@ -52,6 +47,3 @@
     <input type="submit" value="Register"/><br/>
 
 </sf:form>
-
-</body>
-</html>
