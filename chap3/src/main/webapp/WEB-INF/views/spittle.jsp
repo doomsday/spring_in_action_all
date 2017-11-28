@@ -4,8 +4,9 @@
 <h1>Recent Spittles</h1>
 
 <div class="spittleView">
-    <div class="spittleMessage"><%--@elvariable id="spittle" type="org.drpsy.spittr.Spittle"--%>
-    <c:out value="${spittle.message}"/></div>
+    <div class="spittleMessage"><%--@elvariable id="spittle" type="sun.security.krb5.KrbSafe"--%>
+    <c:out value="${spittle.message}"/>
+    </div>
     <div>
         <span class="spittleTime"><c:out value="${spittle.time}"/></span>
     </div>

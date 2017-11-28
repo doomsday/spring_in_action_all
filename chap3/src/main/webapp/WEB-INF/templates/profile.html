@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spittr</title>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+
+<h1>Your profile</h1>
+
+<span th:remove="tag" th:inline="text">[[${spitter.userName}]]</span>
+<span th:remove="tag" th:inline="text">[[${spitter.firstName}]]</span>
+<span th:remove="tag" th:inline="text">[[${spitter.lastName}]]</span>
+
+</body>

@@ -2,19 +2,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
 <%@ page session="false" %>
 
-<style>
-    div.errors {
-        background-color: #ffcccc;
-        border: 1px solid red;
-    }
-    input.error {
-        background-color: #ffcccc;
-    }
-    label.error {
-        color: red;
-    }
-</style>
-
 <h1>Register</h1>
 
 <%-- Form tag doesn't have an action parameter set. Because of that, when this form is submitted, it will be posted --%>
