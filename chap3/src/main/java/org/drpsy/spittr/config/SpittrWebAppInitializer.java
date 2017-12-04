@@ -1,5 +1,7 @@
 package org.drpsy.spittr.config;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -32,6 +34,13 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   @Override
   protected Class<?>[] getRootConfigClasses() {
     return new Class<?>[]{RootConfig.class};
+  }
+
+  // Enables support for multipart requests.
+  @Override
+  protected void customizeRegistration(Dynamic registration) {
+    registration.setMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir") +
+        "spittr/uploads"));
   }
 
 }
