@@ -59,9 +59,4 @@ public class SpittleController {
     return "redirect:/spittles";
   }
 
-  @ExceptionHandler(DuplicateSpittleException.class)
-  public String handleDuplicateSpittle() {
-    return "error/duplicate";
-  }
-
 }
