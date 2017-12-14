@@ -2,9 +2,11 @@ package org.drpsy.spittr.data;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.time.DateUtils;
 import org.drpsy.spittr.Spittle;
+import org.drpsy.spittr.web.DuplicateSpittleException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -45,5 +47,12 @@ public class SpittleRepositoryStubImpl implements SpittleRepository {
     } catch (ParseException ignored) {}
 
     return spittle;
+  }
+
+  @Override
+  public void save(Long id, String message, Date date, Double longitude, Double latitude) {
+    if (findOne(id) != null) {
+      throw new DuplicateSpittleException();
+    }
   }
 }

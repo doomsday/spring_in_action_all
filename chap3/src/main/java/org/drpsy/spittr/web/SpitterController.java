@@ -3,6 +3,8 @@ package org.drpsy.spittr.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.io.File;
+import java.io.IOException;
 import javax.validation.Valid;
 import org.drpsy.spittr.Spitter;
 import org.drpsy.spittr.data.SpitterRepository;
@@ -12,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by drpsy on 16-Nov-17 (22:44).
@@ -46,11 +50,18 @@ public class SpitterController {
   // This object has firstName, lastName, username, and password properties that
   // will be populated from the request parameters of the same name.
   @RequestMapping(value = "/register", method = POST)
-  public String processRegistration(@Valid Spitter spitter, Errors errors) {
+  public String processRegistration(
+      @RequestParam("profilePicture") MultipartFile profilePicture,
+      @Valid Spitter spitter,
+      Errors errors) throws IOException {
 
     if (errors.hasErrors()) {
-      return "registerForm";  // Return to form on validation errors.
+      return "registerForm";  // Return back to the form on validation errors.
     }
+
+    // {tmpdir}/spittr/uploads/data/spittr
+    profilePicture.transferTo(new File("/data/spittr/"
+        + profilePicture.getOriginalFilename()));
 
     spitterRepository.save(spitter);
     return "redirect:/spitter/" + spitter.getUserName();
