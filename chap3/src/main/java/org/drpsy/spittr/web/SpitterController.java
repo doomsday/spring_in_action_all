@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Created by drpsy on 16-Nov-17 (22:44).
@@ -36,8 +37,9 @@ public class SpitterController {
 
   @RequestMapping(value = "/{userName}", method = GET)
   public String showSpitterProfile(@PathVariable String userName, Model model) {
-    Spitter spitter = spitterRepository.findByUserName(userName);
-    model.addAttribute(spitter);
+    if (!model.containsAttribute("spitter")) {
+      model.addAttribute(spitterRepository.findByUserName(userName));
+    }
     return "profile";
   }
 
@@ -51,20 +53,21 @@ public class SpitterController {
   // will be populated from the request parameters of the same name.
   @RequestMapping(value = "/register", method = POST)
   public String processRegistration(
+      RedirectAttributes model,
       @RequestParam("profilePicture") MultipartFile profilePicture,
       @Valid Spitter spitter,
       Errors errors) throws IOException {
-
     if (errors.hasErrors()) {
       return "registerForm";  // Return back to the form on validation errors.
     }
-
-    // {tmpdir}/spittr/uploads/data/spittr
-    profilePicture.transferTo(new File("/data/spittr/"
-        + profilePicture.getOriginalFilename()));
-
+    if (!profilePicture.isEmpty()) {
+      // {tmpdir}/spittr/uploads/data/spittr
+      profilePicture.transferTo(new File("/data/spittr/" + profilePicture.getOriginalFilename()));
+    }
     spitterRepository.save(spitter);
-    return "redirect:/spitter/" + spitter.getUserName();
+    model.addAttribute("username", spitter.getUserName());
+    model.addFlashAttribute("spitter", spitter);
+    return "redirect:/spitter/{username}";
   }
 
 }
