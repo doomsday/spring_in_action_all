@@ -1,14 +1,18 @@
-package org.drpsy.spittr.web;
+package org.drpsy.spittr.web.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
+import java.util.Optional;
 import org.drpsy.spittr.Spittle;
-import org.drpsy.spittr.data.SpittleRepository;
+import org.drpsy.spittr.data.repositories.SpittleRepository;
+import org.drpsy.spittr.web.SpittleForm;
+import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,31 +25,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/spittles")
 public class SpittleController {
 
-  private static final String MAX_LONG_AS_STRING = "" + Long.MAX_VALUE;
-
+  @Autowired
   private SpittleRepository spittleRepository;
 
-  @Autowired
-  public SpittleController(SpittleRepository spittleRepository) {
-    this.spittleRepository = spittleRepository;
-  }
-
+  // GET /spittles
   @RequestMapping(method = GET)
   public String spittles(
-      @RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
+      @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "count", defaultValue = "20") int count,
       Model model) {
-    model.addAttribute("spittleList", spittleRepository.findSpittles(max, count));
+
+    Page<Spittle> spittles = spittleRepository.findAll(PageRequest.of (page, count));
+
+    model.addAttribute("spittleList", spittles.getContent());
     return "spittles";
   }
 
+  // GET /spittles/1
   @RequestMapping(value = "/{spittleId}", method = GET)
   public String spittle(
       @PathVariable("spittleId") long spittleId, // PathVariable value can be omitted if the placeholder's name is the
       // same as the method parameter name.
       Model model) {
-    Spittle spittle = spittleRepository.findOne(spittleId);
-    if (spittle == null) {
+
+    Optional<Spittle> spittle = spittleRepository.findById(spittleId);
+    if (!spittle.isPresent()) {
       throw new SpittleNotFoundException();
     }
 
@@ -53,9 +57,11 @@ public class SpittleController {
     return "spittle";
   }
 
+  // POST /spittles
   @RequestMapping(method = RequestMethod.POST)
-  public String saveSpittle(SpittleForm form, Spittle model) {
-    spittleRepository.save(null, form.getMessage(), new Date(), form.getLongitude(), form.getLatitude());
+  public String saveSpittle(SpittleForm form) {
+
+    spittleRepository.save(new Spittle(null, form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
     return "redirect:/spittles";
   }
 

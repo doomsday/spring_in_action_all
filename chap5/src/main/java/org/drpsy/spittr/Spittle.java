@@ -1,18 +1,33 @@
 package org.drpsy.spittr;
 
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Created by drpsy on 11-Nov-17 (13:56).
  */
+@Entity
 public class Spittle {
-  private final Long id;
-  private final String message;
-  private final Date time;
+
+  @Id
+  @GeneratedValue(strategy= GenerationType.AUTO)
+  private Long id;
+
+  private String message;
+
+  private Date time;
+
   private Double latitude;
+
   private Double longitude;
+
+  public Spittle() {
+  }
 
   public Spittle(String message, Date time) {
     this(message, time, null, null);
@@ -59,12 +74,32 @@ public class Spittle {
   }
 
   @Override
-  public boolean equals(Object that) {
-    return EqualsBuilder.reflectionEquals(this, that, "id", "time");
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Spittle spittle = (Spittle) o;
+
+    return new EqualsBuilder()
+        .append(message, spittle.message)
+        .append(time, spittle.time)
+        .append(latitude, spittle.latitude)
+        .append(longitude, spittle.longitude)
+        .isEquals();
   }
 
   @Override
   public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, "id", "time");
+    return new HashCodeBuilder(17, 37)
+        .append(message)
+        .append(time)
+        .append(latitude)
+        .append(longitude)
+        .toHashCode();
   }
 }
