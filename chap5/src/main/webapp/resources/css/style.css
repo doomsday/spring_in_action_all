@@ -1,0 +1,31 @@
+h1 {
+  font-family: Arial, serif;
+  font-size: large;
+  font-weight: bold;
+}
+
+.spittleMessage {
+  font-size: medium;
+}
+
+.spittleTime {
+  font-size: small;
+  margin-left: 22px;
+}
+
+.spittleMessage {
+  display: inline-block;
+}
+
+div.errors {
+  background-color: #ffcccc;
+  border: 1px solid red;
+}
+
+input.error {
+  background-color: #ffcccc;
+}
+
+label.error {
+  color: red;
+}

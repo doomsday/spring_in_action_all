@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spittr</title>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+
+<form method="post" enctype="multipart/form-data" th:object="${spitter}">
+    <!-- Displays validation errors -->
+    <div class="errors" th:if="${#fields.hasErrors('*')}">
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is correct</li>
+        </ul>
+    </div>
+
+    <!-- Profile picture -->
+    <label>Profile Picture</label>
+    <input type="file" name="profilePicture" accept="image/jpeg,image/png,image/gif"/><br/>
+
+    <!-- First name -->
+    <label th:class="${#fields.hasErrors('firstName')} ? 'error'">First name:</label>
+    <input type="text" th:field="*{firstName}" th:class="${#fields.hasErrors('firstName')} ? 'error'"/><br/>
+
+    <!-- Last name -->
+    <label th:class="${#fields.hasErrors('lastName')} ? 'error'">Last name:</label>
+    <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')} ? 'error'"/><br/>
+
+    <!-- Error -->
+    <label th:class="${#fields.hasErrors('email')} ? 'error'">Email:</label>
+    <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'"/><br/>
+
+    <!-- User name -->
+    <label th:class="${#fields.hasErrors('userName')} ? 'error'">Username:</label>
+    <input type="text" th:field="*{userName}" th:class="${#fields.hasErrors('userName')} ? 'error'"/><br/>
+
+    <!-- Password -->
+    <label th:class="${#fields.hasErrors('password')} ? 'error'">Password:</label>
+    <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'"/><br/>
+
+    <input type="submit" value="Register"/>
+
+</form>
+
+</body>
+</html>
