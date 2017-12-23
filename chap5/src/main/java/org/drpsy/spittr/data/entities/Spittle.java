@@ -1,4 +1,4 @@
-package org.drpsy.spittr;
+package org.drpsy.spittr.data.entities;
 
 import java.util.Date;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Spittle {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
   private Long id;
 
   private String message;

@@ -7,8 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
-import org.drpsy.spittr.Spittr;
+import javax.transaction.Transactional;
 import org.drpsy.spittr.config.PropertiesConfigReader;
+import org.drpsy.spittr.data.entities.Spittr;
 import org.drpsy.spittr.data.repositories.SpittrRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
@@ -56,6 +57,7 @@ public class SpittrController {
   // will be populated from the request parameters of the same name.
   //
   // POST /spittr/register
+  @Transactional
   @RequestMapping(value = "/register", method = POST)
   public String processRegistration(
       RedirectAttributes model,                 // Sub-interface of Model with methods for setting flash attributes.

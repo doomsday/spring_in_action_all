@@ -1,6 +1,6 @@
 package org.drpsy.spittr.config;
 
-import org.drpsy.spittr.Spittle;
+import org.drpsy.spittr.data.entities.Spittle;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;

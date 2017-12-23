@@ -2,6 +2,8 @@ package org.drpsy.spittr.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 public class Groups {
 
   @Id
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
   private Integer id;
 
   public Integer getGroupName() {

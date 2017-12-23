@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<header>
+    <div sec:authorize="isAuthenticated()">
+        Hello <span sec:authentication="name">someone</span>
+    </div>
+</header>
+
+<footer>
+    <p>Spittr (c) 2017</p>
+</footer>
+
+</html>

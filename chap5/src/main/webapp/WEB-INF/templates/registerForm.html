@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form method="post" enctype="multipart/form-data" th:object="${spittr}">
+<form method="post" enctype="multipart/form-data" th:action="@{/spittr/register}" th:object="${spittr}">
     <!-- Displays validation errors -->
     <div class="errors" th:if="${#fields.hasErrors('*')}">
         <ul>

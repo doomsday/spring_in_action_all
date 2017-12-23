@@ -4,7 +4,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
 import java.util.Optional;
-import org.drpsy.spittr.Spittle;
+import org.drpsy.spittr.data.entities.Spittle;
 import org.drpsy.spittr.data.repositories.SpittleRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;

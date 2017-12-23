@@ -3,7 +3,6 @@ package org.drpsy.spittr.config;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,20 +17,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+  private final DataSource dataSource;
+
   @Autowired
-  DataSource dataSource;
+  public SecurityConfig(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
+    // Configuring authentication.
     http
-        // Support authentication via a form-based login (using a predefined login page) as well as HTTP Basic.
-        .formLogin()
-        .and().httpBasic();
+        .formLogin()  // Authentication via a form-based login (using a predefined login page).
+          .loginPage("/login")
 
+        .and()
+        .httpBasic()  // HTTP Basic authentication.
+          .realmName("Spittr")
+
+        .and()
+        .rememberMe() // Remember Me authentication.
+          .key("spittrKey")
+
+        .and()
+        .logout() // Logout support.
+          .logoutSuccessUrl("/");
+
+    // Configuring to selectively apply security to different URL paths.
     http
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/**").authenticated()  // Should be authenticated.
+//        .antMatchers(HttpMethod.POST, "/spittles**").authenticated()  // Should be authenticated.
         .anyRequest().permitAll();
 
   }
@@ -45,15 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .dataSource(dataSource)
         .passwordEncoder(new BCryptPasswordEncoder());
 
-    // We can configure our own auth queries. All of them take the username as their only parameter.
-    /*
-        .usersByUsernameQuery(
-            "SELECT username, password, true " +
-                "FROM spittr WHERE username = ?")
-        .authoritiesByUsernameQuery(
-            "SELECT username, 'ROLE_USER' "
-                + "FROM spittr WHERE username = ?");
-     */
   }
 
 }

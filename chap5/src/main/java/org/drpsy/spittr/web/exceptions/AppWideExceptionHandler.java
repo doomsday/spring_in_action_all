@@ -1,6 +1,5 @@
 package org.drpsy.spittr.web.exceptions;
 
-import org.drpsy.spittr.web.exceptions.DuplicateSpittleException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

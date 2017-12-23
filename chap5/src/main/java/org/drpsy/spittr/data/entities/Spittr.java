@@ -1,4 +1,4 @@
-package org.drpsy.spittr;
+package org.drpsy.spittr.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +22,7 @@ import org.drpsy.spittr.validation.groups.StepTwo;
 public class Spittr {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
   private Long id;
 
   @NotNull(groups = StepOne.class)

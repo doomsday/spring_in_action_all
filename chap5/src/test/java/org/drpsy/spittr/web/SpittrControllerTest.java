@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.drpsy.spittr.Spittr;
+import org.drpsy.spittr.data.entities.Spittr;
 import org.drpsy.spittr.data.repositories.SpittrRepository;
 import org.drpsy.spittr.web.controllers.SpittrController;
 import org.junit.jupiter.api.Test;
