@@ -6,6 +6,9 @@
   <persistence-unit name="spittr" transaction-type="JTA">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>jdbc/MySQLSpittr</jta-data-source>
+    <properties>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.SunOneJtaPlatform" />
+    </properties>
   </persistence-unit>
 
 </persistence>

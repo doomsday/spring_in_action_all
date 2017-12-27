@@ -22,28 +22,25 @@ import org.drpsy.spittr.validation.groups.StepTwo;
 public class Spittr {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
-  private Long id;
-
   @NotNull(groups = StepOne.class)
-  @Size(min = 5, max = 16, message = "{userName.size}", groups = StepOne.class)
+  @Size(min = 5, max = 50, message = "{userName.size}", groups = StepOne.class)
   @Column(name = "username")
   private String userName;
 
   @NotNull(groups = StepOne.class)
-  @Size(min = 5, max = 25, message = "{password.size}", groups = StepOne.class)
+  @Size(min = 5, max = 50, message = "{password.size}", groups = StepOne.class)
   private String password;
 
   @NotNull(groups = StepTwo.class)
   private Boolean enabled;
 
   @NotNull(groups = StepOne.class)
-  @Size(min = 2, max = 30, message = "{firstName.size}", groups = StepOne.class)
+  @Size(min = 2, max = 50, message = "{firstName.size}", groups = StepOne.class)
   @Column(name = "firstname")
   private String firstName;
 
   @NotNull(groups = StepOne.class)
-  @Size(min = 2, max = 30, message = "{lastName.size}", groups = StepOne.class)
+  @Size(min = 2, max = 50, message = "{lastName.size}", groups = StepOne.class)
   @Column(name = "lastname")
   private String lastName;
 
@@ -63,11 +60,6 @@ public class Spittr {
   public Spittr() {}
 
   public Spittr(String userName, String password, String firstName, String lastName) {
-    this(null, userName, password, firstName, lastName);
-  }
-
-  public Spittr(Long id, String userName, String password, String firstName, String lastName) {
-    this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.userName = userName;
@@ -80,14 +72,6 @@ public class Spittr {
 
   public void setPhotoUUID(String photoUUID) {
     this.photoUUID = photoUUID;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public String getFirstName() {

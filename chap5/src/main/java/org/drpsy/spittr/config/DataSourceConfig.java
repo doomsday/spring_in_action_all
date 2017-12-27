@@ -58,8 +58,7 @@ public class DataSourceConfig {
     jpaProperties.setProperty("hibernate.connection.charSet", "UTF-8");
     jpaProperties.setProperty("hibernate.validator.apply_to_ddl", "false");
     jpaProperties.setProperty("hibernate.validator.autoregister_listeners", "false");
-    jpaProperties.setProperty("hibernate.transaction.jta.platform", "org.hibernate.service.jta.platform.internal"
-        + ".SunOneJtaPlatform");
+
     return jpaProperties;
   }
 

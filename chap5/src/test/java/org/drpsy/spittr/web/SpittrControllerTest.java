@@ -35,7 +35,7 @@ class SpittrControllerTest {
 
     SpittrRepository mockRepository = mock(SpittrRepository.class);
     Spittr unsaved = new Spittr("jbauer", "24hours", "Jack", "Bauer");
-    Spittr saved = new Spittr(24L, "jbauer", "24hours", "Jack", "Bauer");
+    Spittr saved = new Spittr("jbauer", "24hours", "Jack", "Bauer");
 
     when(mockRepository.save(unsaved)).thenReturn(saved);
 
