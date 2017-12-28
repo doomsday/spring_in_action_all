@@ -2,12 +2,14 @@ package org.drpsy.spittr.config;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Any bean in the Spring application context that implements WebSecurityConfigurer
@@ -24,13 +26,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     this.dataSource = dataSource;
   }
 
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     // Configuring authentication.
     http
         .formLogin()  // Authentication via a form-based login (using a predefined login page).
-          .loginPage("/login")
+          .loginPage("/auth/login")
+
+        .and()
+        .logout() // Logout support.
+        .logoutUrl("/auth/logout")
+        .logoutSuccessUrl("/auth/login")
+        .deleteCookies("JSESSIONID")
+        .invalidateHttpSession(true)
 
         .and()
         .httpBasic()  // HTTP Basic authentication.
@@ -38,16 +52,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         .and()
         .rememberMe() // Remember Me authentication.
-          .key("spittrKey")
-
-        .and()
-        .logout() // Logout support.
-          .logoutSuccessUrl("/");
+          .key("spittrKey");
 
     // Configuring to selectively apply security to different URL paths.
     http
         .authorizeRequests()
-//        .antMatchers(HttpMethod.POST, "/spittles**").authenticated()  // Should be authenticated.
+        // Permitted.
+        .antMatchers("/", "/home").permitAll()
+        .antMatchers("/spittr/register").permitAll()
+        .antMatchers("/spittr/auth/**").permitAll()
+        // Authenticated.
+        .antMatchers("/spittles/**").authenticated()
+        // Has role.
+        .antMatchers("/admin/**").hasRole("ADMIN")
+        .antMatchers("/spittr/**").hasRole("SPITTR")
+
         .anyRequest().permitAll();
 
   }

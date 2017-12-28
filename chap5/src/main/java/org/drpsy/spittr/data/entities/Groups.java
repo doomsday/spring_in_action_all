@@ -16,6 +16,9 @@ public class Groups {
   @GeneratedValue(strategy= GenerationType.IDENTITY)
   private Integer id;
 
+  @Column(name = "group_name")
+  private Integer groupName;
+
   public Integer getGroupName() {
     return groupName;
   }
@@ -23,9 +26,6 @@ public class Groups {
   public void setGroupName(Integer groupName) {
     this.groupName = groupName;
   }
-
-  @Column(name = "group_name")
-  private Integer groupName;
 
   public Integer getId() {
     return id;

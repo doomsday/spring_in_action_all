@@ -15,8 +15,8 @@ import javax.persistence.Table;
 public class GroupAuthorities {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
-  private Integer id;
+  @Column(name = "group_id")
+  private Integer groupId;
 
   private String authority;
 
@@ -36,14 +36,4 @@ public class GroupAuthorities {
     this.groupId = groupId;
   }
 
-  @Column(name = "group_id")
-  private Integer groupId;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 }

@@ -1,5 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"> <!-- Declare Thymeleaf namespace -->
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
 <head>
     <title>Spittr</title>
     <link rel="stylesheet" type="text/css"
@@ -8,8 +10,18 @@
 <body>
 
 <h1 th:text="#{spittr.welcome}"></h1>
-<a th:href="@{/spittles}">Spittles</a> |    <!-- th:href links to pages -->
-<a th:href="@{/spittr/register}">Register</a>
+
+<div id="header" th:include="page :: header"></div>
+
+<a th:href="@{/spittles}">Spittles</a>    <!-- th:href links to pages -->
+<a th:href="@{/spittr/register}">| Register</a>
+<a sec:authorize="!isAuthenticated()" th:href="@{/auth/login}">| Login</a>
+<form sec:authorize="isAuthenticated()" th:action="@{/auth/logout}" method="POST">
+    <input type="hidden"
+           name="${_csrf.parameterName}"
+           value="${_csrf.token}"/>
+    <input type="submit" value="Logout">
+</form>
 
 </body>
 </html>

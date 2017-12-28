@@ -20,6 +20,17 @@ public class GroupMembers {
 
   private String username;
 
+  @Column(name = "group_id")
+  private Integer groupId;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
   public String getUsername() {
     return username;
   }
@@ -36,14 +47,4 @@ public class GroupMembers {
     this.groupId = groupId;
   }
 
-  @Column(name = "group_id")
-  private Integer groupId;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 }

@@ -14,6 +14,8 @@ import org.drpsy.spittr.data.repositories.SpittrRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -33,6 +35,9 @@ public class SpittrController {
 
   @Autowired
   private SpittrRepository spittrRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Autowired
   private PropertiesConfigReader configReader;
@@ -76,6 +81,9 @@ public class SpittrController {
     if (spittrRepository.findByUserName(spittr.getUserName()) != null) {
       throw new DuplicateSpittrException();
     }
+
+    // Encrypt password.
+    spittr.setPassword(passwordEncoder.encode(spittr.getPassword()));
 
     // Photo processing.
     Optional<String> photoSaveDir = configReader.getPropValue("photo.save.dir");
