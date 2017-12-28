@@ -16,11 +16,10 @@
 <a th:href="@{/spittles}">Spittles</a>    <!-- th:href links to pages -->
 <a th:href="@{/spittr/register}">| Register</a>
 <a sec:authorize="!isAuthenticated()" th:href="@{/auth/login}">| Login</a>
-<form sec:authorize="isAuthenticated()" th:action="@{/auth/logout}" method="POST">
-    <input type="hidden"
-           name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-    <input type="submit" value="Logout">
+<a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">| Logout</a>
+
+<form name="logoutForm" th:action="@{/auth/logout}" method="POST">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 
 </body>
