@@ -21,12 +21,15 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 @EnableTransactionManagement
 public class DataSourceConfig {
 
+  // A factory for connections to the physical data source that this DataSource object represents.
   @Bean
   public DataSource dataSource() {
     JndiDataSourceLookup jndiDataSourceLookup = new JndiDataSourceLookup();
     return jndiDataSourceLookup.getDataSource("jdbc/MySQLSpittr");
   }
 
+  // FactoryBean that creates a JPA EntityManagerFactory
+  // according to JPA's standard container bootstrap contract.
   @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
@@ -40,11 +43,16 @@ public class DataSourceConfig {
     return lcem;
   }
 
+  // This is the central interface in Spring's transaction infrastructure. Applications can use this directly, but it
+  // is not primarily meant as API: Typically, applications will work with either TransactionTemplate or declarative
+  // transaction demarcation through AOP.
   @Bean
   public PlatformTransactionManager transactionManager() {
     return new JtaTransactionManager();
   }
 
+  // Translates native resource exceptions to Spring's DataAccessException hierarchy
+  // to any bean marked with Spring's @Repository annotation.
   @Bean
   public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
     return new PersistenceExceptionTranslationPostProcessor();

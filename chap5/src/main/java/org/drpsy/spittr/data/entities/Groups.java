@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class Groups {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "group_name")

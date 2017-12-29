@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class GroupMembers {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String username;

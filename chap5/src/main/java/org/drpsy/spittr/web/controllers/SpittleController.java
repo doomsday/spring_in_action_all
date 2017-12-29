@@ -35,7 +35,7 @@ public class SpittleController {
       @RequestParam(value = "count", defaultValue = "20") int count,
       Model model) {
 
-    Page<Spittle> spittles = spittleRepository.findAll(PageRequest.of (page, count));
+    Page<Spittle> spittles = spittleRepository.findAll(PageRequest.of(page, count));
 
     model.addAttribute("spittleList", spittles.getContent());
     return "spittles";

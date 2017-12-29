@@ -15,7 +15,8 @@ h1 {
 
 .spittle_entity {
   padding: 10px;
-  background-color: azure;
+  background-color: #f7f7f7;
+  border: 2px solid #dddddd;
 }
 
 .spittleTime {
@@ -41,14 +42,19 @@ label.error {
 }
 
 #header {
-  padding: 20px 0 20px 10px;  /* Top Right Bottom Left */
+  padding: 20px 0 20px 10px; /* Top Right Bottom Left */
   background-color: whitesmoke;
   font-size: small;
   font-weight: bold;
+  border: 1px solid #2e3133;
 }
 
 #footer {
-  padding: 20px 0 20px 10px;  /* Top Right Bottom Left */
+  padding: 20px 0 20px 10px; /* Top Right Bottom Left */
   background-color: #e7e8ea;
   font-size: small;
+}
+
+#footer p {
+  margin: 0;
 }

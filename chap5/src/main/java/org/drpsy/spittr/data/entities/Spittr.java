@@ -2,8 +2,6 @@ package org.drpsy.spittr.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -57,7 +55,8 @@ public class Spittr {
   @Column(name = "photo_uuid")
   private String photoUUID;
 
-  public Spittr() {}
+  public Spittr() {
+  }
 
   public Spittr(String userName, String password, String firstName, String lastName) {
     this.firstName = firstName;
