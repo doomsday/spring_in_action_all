@@ -1,5 +1,4 @@
 body {
-  margin: 0cm;
   padding: 2cm;
 }
 
@@ -11,15 +10,17 @@ h1 {
 
 .spittleMessage {
   font-size: medium;
+  display: inline-block;
+}
+
+.spittle_entity {
+  padding: 10px;
+  background-color: azure;
 }
 
 .spittleTime {
   font-size: small;
   margin-left: 22px;
-}
-
-.spittleMessage {
-  display: inline-block;
 }
 
 div.errors {
@@ -33,4 +34,21 @@ input.error {
 
 label.error {
   color: red;
+}
+
+#content {
+  padding: 10px;
+}
+
+#header {
+  padding: 20px 0 20px 10px;  /* Top Right Bottom Left */
+  background-color: whitesmoke;
+  font-size: small;
+  font-weight: bold;
+}
+
+#footer {
+  padding: 20px 0 20px 10px;  /* Top Right Bottom Left */
+  background-color: #e7e8ea;
+  font-size: small;
 }

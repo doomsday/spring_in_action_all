@@ -7,14 +7,23 @@
 </head>
 <body>
 
-<h1>Recent Spittles</h1>
+<div id="header" th:include="page :: header"></div>
 
-<div class="spittleView">
-    <div class="spittleMessage">
-        <span th:remove="tag" th:inline="text">[[${spittle.message}]]</span>
-        <div>
-            <span th:class="spittleTime" th:remove="tag" th:inline="text">[[${spittle.time}]]</span>
+<div id="content">
+
+    <h1>Recent Spittles</h1>
+
+    <div class="spittleView">
+        <div class="spittleMessage">
+            <span th:remove="tag" th:inline="text">[[${spittle.message}]]</span>
+            <div>
+                <span th:class="spittleTime" th:remove="tag" th:inline="text">[[${spittle.time}]]</span>
+            </div>
         </div>
     </div>
+
 </div>
+
+<div id="footer" th:include="page :: footer"></div>
+
 </body>

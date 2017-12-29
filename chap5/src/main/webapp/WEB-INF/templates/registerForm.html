@@ -7,41 +7,49 @@
 </head>
 <body>
 
-<form method="post" enctype="multipart/form-data" th:action="@{/spittr/register}" th:object="${spittr}">
-    <!-- Displays validation errors -->
-    <div class="errors" th:if="${#fields.hasErrors('*')}">
-        <ul>
-            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is correct</li>
-        </ul>
-    </div>
+<div id="header" th:include="page :: header"></div>
 
-    <!-- Profile picture -->
-    <label>Profile Picture</label>
-    <input type="file" name="profilePicture" accept="image/jpeg,image/png,image/gif"/><br/>
+<div id="content">
 
-    <!-- First name -->
-    <label th:class="${#fields.hasErrors('firstName')} ? 'error'">First name:</label>
-    <input type="text" th:field="*{firstName}" th:class="${#fields.hasErrors('firstName')} ? 'error'"/><br/>
+    <form method="post" enctype="multipart/form-data" th:action="@{/spittr/register}" th:object="${spittr}">
+        <!-- Displays validation errors -->
+        <div class="errors" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is correct</li>
+            </ul>
+        </div>
 
-    <!-- Last name -->
-    <label th:class="${#fields.hasErrors('lastName')} ? 'error'">Last name:</label>
-    <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')} ? 'error'"/><br/>
+        <!-- Profile picture -->
+        <label>Profile Picture</label>
+        <input type="file" name="profilePicture" accept="image/jpeg,image/png,image/gif"/><br/>
 
-    <!-- Error -->
-    <label th:class="${#fields.hasErrors('email')} ? 'error'">Email:</label>
-    <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'"/><br/>
+        <!-- First name -->
+        <label th:class="${#fields.hasErrors('firstName')} ? 'error'">First name:</label>
+        <input type="text" th:field="*{firstName}" th:class="${#fields.hasErrors('firstName')} ? 'error'"/><br/>
 
-    <!-- User name -->
-    <label th:class="${#fields.hasErrors('userName')} ? 'error'">Username:</label>
-    <input type="text" th:field="*{userName}" th:class="${#fields.hasErrors('userName')} ? 'error'"/><br/>
+        <!-- Last name -->
+        <label th:class="${#fields.hasErrors('lastName')} ? 'error'">Last name:</label>
+        <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')} ? 'error'"/><br/>
 
-    <!-- Password -->
-    <label th:class="${#fields.hasErrors('password')} ? 'error'">Password:</label>
-    <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'"/><br/>
+        <!-- Error -->
+        <label th:class="${#fields.hasErrors('email')} ? 'error'">Email:</label>
+        <input type="text" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'"/><br/>
 
-    <input type="submit" value="Register"/>
+        <!-- User name -->
+        <label th:class="${#fields.hasErrors('userName')} ? 'error'">Username:</label>
+        <input type="text" th:field="*{userName}" th:class="${#fields.hasErrors('userName')} ? 'error'"/><br/>
 
-</form>
+        <!-- Password -->
+        <label th:class="${#fields.hasErrors('password')} ? 'error'">Password:</label>
+        <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'"/><br/>
+
+        <input type="submit" value="Register"/>
+
+    </form>
+
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
 
 </body>
 </html>

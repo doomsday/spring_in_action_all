@@ -7,10 +7,16 @@
 </head>
 <body>
 
-<h1>Your profile</h1>
+<div id="header" th:include="page :: header"></div>
 
-<span th:remove="tag" th:inline="text">[[${spittr.userName}]]</span>
-<span th:remove="tag" th:inline="text">[[${spittr.firstName}]]</span>
-<span th:remove="tag" th:inline="text">[[${spittr.lastName}]]</span>
+<div id="content">
+    <h1>Your profile</h1>
+
+    <span th:remove="tag" th:inline="text">[[${spittr.userName}]]</span>
+    <span th:remove="tag" th:inline="text">[[${spittr.firstName}]]</span>
+    <span th:remove="tag" th:inline="text">[[${spittr.lastName}]]</span>
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
 
 </body>

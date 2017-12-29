@@ -7,19 +7,25 @@
 </head>
 <body>
 
-<h1>Recent Spittles</h1>
+<div id="header" th:include="page :: header"></div>
 
-<th:block th:each="spittle : ${spittleList}">
-    <li id=spittle_"${spittle.id}">
-        <div class="spittleMessage">
-            <a th:href="@{'/spittles/' + ${spittle.id}}">[[${spittle.message}]]</a>
-        </div>
-        <div>
-            <span th:class="spittleTime" th:text="${spittle.time}"></span>
-            <span th:class="spittleLocation" th:text="${spittle.latitude}"></span>
-            <span th:class="spittleLocation" th:text="${spittle.longitude}"></span>
-        </div>
-    </li>
-</th:block>
+<div id="content">
+    <h1>Recent Spittles</h1>
+
+    <th:block th:each="spittle : ${spittleList}">
+        <li th:id="'spittle_' + ${spittle.id}" class="spittle_entity">
+            <div class="spittleMessage">
+                <a th:href="@{'/spittles/' + ${spittle.id}}">[[${spittle.message}]]</a>
+            </div>
+            <div>
+                <span th:class="spittleTime" th:text="${spittle.time}"></span>
+                <span th:class="spittleLocation" th:text="${spittle.latitude}"></span>
+                <span th:class="spittleLocation" th:text="${spittle.longitude}"></span>
+            </div>
+        </li>
+    </th:block>
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
 
 </body>
