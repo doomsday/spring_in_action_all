@@ -1,100 +1,89 @@
-create table authorities
+CREATE TABLE authorities
 (
-	username char(50) not null,
-	authority char(50) not null,
-	constraint authorities_username_uindex
-		unique (username)
+  username  CHAR(50) NOT NULL,
+  authority CHAR(50) NOT NULL,
+  CONSTRAINT authorities_username_uindex
+  UNIQUE (username)
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-create table group_authorities
+CREATE TABLE group_authorities
 (
-	authority char(50) not null,
-	group_id int not null
+  authority CHAR(50) NOT NULL,
+  group_id  INT      NOT NULL
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-create index fk_group_authorities_group
-	on group_authorities (group_id)
-;
+CREATE INDEX fk_group_authorities_group
+  ON group_authorities (group_id);
 
-create table group_members
+CREATE TABLE group_members
 (
-	id int auto_increment
-		primary key,
-	username char(50) not null,
-	group_id int not null,
-	constraint group_members_id_uindex
-		unique (id),
-	constraint group_members_username_uindex
-		unique (username)
+  id       INT AUTO_INCREMENT
+    PRIMARY KEY,
+  username CHAR(50) NOT NULL,
+  group_id INT      NOT NULL,
+  CONSTRAINT group_members_id_uindex
+  UNIQUE (id),
+  CONSTRAINT group_members_username_uindex
+  UNIQUE (username)
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-create index fk_group_members_group
-	on group_members (group_id)
-;
+CREATE INDEX fk_group_members_group
+  ON group_members (group_id);
 
-create table groups
+CREATE TABLE groups
 (
-	id int auto_increment
-		primary key,
-	group_name char(50) not null,
-	constraint groups_id_uindex
-		unique (id),
-	constraint groups_group_name_uindex
-		unique (group_name)
+  id         INT AUTO_INCREMENT
+    PRIMARY KEY,
+  group_name CHAR(50) NOT NULL,
+  CONSTRAINT groups_id_uindex
+  UNIQUE (id),
+  CONSTRAINT groups_group_name_uindex
+  UNIQUE (group_name)
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-alter table group_authorities
-	add constraint fk_group_authorities_group
-		foreign key (group_id) references groups (id)
-;
+ALTER TABLE group_authorities
+  ADD CONSTRAINT fk_group_authorities_group
+FOREIGN KEY (group_id) REFERENCES groups (id);
 
-alter table group_members
-	add constraint fk_group_members_group
-		foreign key (group_id) references groups (id)
-;
+ALTER TABLE group_members
+  ADD CONSTRAINT fk_group_members_group
+FOREIGN KEY (group_id) REFERENCES groups (id);
 
-create table spittle
+CREATE TABLE spittle
 (
-	id int auto_increment
-		primary key,
-	message text not null,
-	time datetime not null,
-	latitude decimal(10,8) null,
-	longitude decimal(11,8) null,
-	constraint spittle_id_uindex
-		unique (id)
+  id        INT AUTO_INCREMENT
+    PRIMARY KEY,
+  message   TEXT           NOT NULL,
+  time      DATETIME       NOT NULL,
+  latitude  DECIMAL(10, 8) NULL,
+  longitude DECIMAL(11, 8) NULL,
+  CONSTRAINT spittle_id_uindex
+  UNIQUE (id)
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-create table users
+CREATE TABLE users
 (
-	username char(50) not null
-		primary key,
-	password char(60) not null,
-	enabled tinyint(1) default '1' not null,
-	firstname char(50) not null,
-	lastname char(50) not null,
-	email char(50) not null,
-	photo_uuid char(36) not null,
-	constraint users_username_uindex
-		unique (username),
-	constraint users_email_uindex
-		unique (email)
+  username   CHAR(50)               NOT NULL
+    PRIMARY KEY,
+  password   CHAR(60)               NOT NULL,
+  enabled    TINYINT(1) DEFAULT '1' NOT NULL,
+  firstname  CHAR(50)               NOT NULL,
+  lastname   CHAR(50)               NOT NULL,
+  email      CHAR(50)               NOT NULL,
+  photo_uuid CHAR(36)               NOT NULL,
+  CONSTRAINT users_username_uindex
+  UNIQUE (username),
+  CONSTRAINT users_email_uindex
+  UNIQUE (email)
 )
-engine=InnoDB
-;
+  ENGINE = InnoDB;
 
-alter table authorities
-	add constraint fk_authorities_users
-		foreign key (username) references users (username)
-;
+ALTER TABLE authorities
+  ADD CONSTRAINT fk_authorities_users
+FOREIGN KEY (username) REFERENCES users (username);
 

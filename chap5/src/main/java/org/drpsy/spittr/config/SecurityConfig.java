@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Configuring authentication.
     http
         .formLogin()  // Authentication via a form-based login (using a predefined login page).
-          .loginPage("/auth/login")
+        .loginPage("/auth/login")
 
         .and()
         .logout() // Logout support.
@@ -49,11 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         .and()
         .httpBasic()  // HTTP Basic authentication.
-          .realmName("Spittr")
+        .realmName("Spittr")
 
         .and()
         .rememberMe() // Remember Me authentication.
-          .key("spittrKey");
+        .key("spittrKey");
 
     // Configuring to selectively apply security to different URL paths.
     http
@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/", "/home").permitAll()
         .antMatchers("/spittr/register").permitAll()
         .antMatchers(HttpMethod.GET, "/spittr/auth/**").denyAll()
-        .antMatchers(HttpMethod.POST,"/spittr/auth/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/spittr/auth/**").permitAll()
 
         // Authenticated.
         .antMatchers("/spittles/**").authenticated()

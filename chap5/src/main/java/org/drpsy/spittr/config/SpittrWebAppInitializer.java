@@ -17,7 +17,7 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   // Map DispatcherServlet to. '/' indicating that it is the application's default servlet.
   @Override
   protected String[] getServletMappings() {
-    return new String[] {"/"};
+    return new String[]{"/"};
   }
 
   // Load beans containing web components: controllers, view resolvers and handler mappings.

@@ -15,4 +15,6 @@ import javax.inject.Qualifier;
 @Qualifier
 @Retention(RUNTIME)
 @Target({FIELD, TYPE, METHOD})
-public @interface Spittr {}
+public @interface Spittr {
+
+}

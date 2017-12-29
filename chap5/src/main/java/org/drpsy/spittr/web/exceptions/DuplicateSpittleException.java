@@ -11,4 +11,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
     reason = "Duplicate Spittle detected"
 )
 public class DuplicateSpittleException extends RuntimeException {
+
 }

@@ -14,7 +14,6 @@ import org.drpsy.spittr.data.repositories.SpittrRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,9 +67,9 @@ public class SpittrController {
       RedirectAttributes model,                 // Sub-interface of Model with methods for setting flash attributes.
       @RequestParam("profilePicture") MultipartFile profilePicture,
       @Validated(StepOne.class) Spittr spittr,  // Indicate to Spring that the command obj. has valid. constraints that
-                                                // should be enforced.
+      // should be enforced.
       Errors errors)                            // If there are any validation errors, they're available in the
-                                                // Errors object.
+  // Errors object.
       throws IOException {
 
     // Validation.
