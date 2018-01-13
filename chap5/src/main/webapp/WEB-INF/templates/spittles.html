@@ -25,22 +25,24 @@
         </li>
     </th:block>
 
-    <form method="post" enctype="application/x-www-form-urlencoded" th:action="@{/spittles}" th:object="${spittle}">
+    <div id="new_spittle">
+        <h3>New Spittle</h3>
+        <form method="post" enctype="application/x-www-form-urlencoded" th:action="@{/spittles}" th:object="${spittle}">
 
-        <!-- Displays validation errors -->
-        <div class="errors" th:if="${#fields.hasErrors('*')}">
-            <ul>
-                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is correct</li>
-            </ul>
-        </div>
+            <!-- Displays validation errors -->
+            <div class="errors" th:if="${#fields.hasErrors('*')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is correct</li>
+                </ul>
+            </div>
 
-        <!-- Message -->
-        <label th:class="${#fields.hasErrors('message')} ? 'error'">Message:</label>
-        <input type="text" th:field="*{message}" th:class="${#fields.hasErrors('message')} ? 'error'"/><br/>
+            <!-- Message -->
+            <input type="text" th:field="*{message}" th:class="${#fields.hasErrors('message')} ? 'error'"/><br/>
 
-        <input type="submit" value="Add"/>
+            <input type="submit" value="Add"/>
 
-    </form>
+        </form>
+    </div>
 
 </div>
 

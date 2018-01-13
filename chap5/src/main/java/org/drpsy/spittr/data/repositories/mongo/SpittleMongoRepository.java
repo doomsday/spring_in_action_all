@@ -1,6 +1,6 @@
 package org.drpsy.spittr.data.repositories.mongo;
 
-import org.drpsy.spittr.data.mongo.documents.spittr.Spittle;
+import org.drpsy.spittr.data.mongo.documents.Spittle;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

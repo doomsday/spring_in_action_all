@@ -1,4 +1,4 @@
-package org.drpsy.spittr.data.mongo.documents.spittr;
+package org.drpsy.spittr.data.mongo.documents;
 
 import java.util.Date;
 import org.bson.types.ObjectId;
