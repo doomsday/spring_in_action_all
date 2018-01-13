@@ -4,8 +4,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
 import java.util.Optional;
-import org.drpsy.spittr.data.entities.Spittle;
-import org.drpsy.spittr.data.repositories.SpittleRepository;
+//import org.drpsy.spittr.data.entities.Spittle;
+import org.drpsy.spittr.data.mongo.documents.spittr.Spittle;
+import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/spittles")
 public class SpittleController {
 
+//  @Autowired
+//  private SpittleRepository spittleRepository;
+
   @Autowired
-  private SpittleRepository spittleRepository;
+  private SpittleMongoRepository spittleRepository;
 
   // GET /spittles
   @RequestMapping(method = GET)
@@ -38,6 +42,7 @@ public class SpittleController {
     Page<Spittle> spittles = spittleRepository.findAll(PageRequest.of(page, count));
 
     model.addAttribute("spittleList", spittles.getContent());
+    model.addAttribute("spittle", new Spittle());
     return "spittles";
   }
 
@@ -61,7 +66,7 @@ public class SpittleController {
   @RequestMapping(method = RequestMethod.POST)
   public String saveSpittle(SpittleForm form) {
 
-    spittleRepository.save(new Spittle(null, form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
+    spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
     return "redirect:/spittles";
   }
 

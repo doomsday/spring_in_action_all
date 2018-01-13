@@ -10,7 +10,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import org.drpsy.spittr.config.PropertiesConfigReader;
 import org.drpsy.spittr.data.entities.Spittr;
-import org.drpsy.spittr.data.repositories.SpittrRepository;
+import org.drpsy.spittr.data.repositories.jpa.SpittrRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;

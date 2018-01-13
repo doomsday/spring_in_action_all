@@ -34,11 +34,6 @@ public class Spittle {
   }
 
   public Spittle(String message, Date time, Double longitude, Double latitude) {
-    this(null, message, time, longitude, latitude);
-  }
-
-  public Spittle(Long id, String message, Date time, Double longitude, Double latitude) {
-    this.id = id;
     this.message = message;
     this.time = time;
     this.setLongitude(longitude);

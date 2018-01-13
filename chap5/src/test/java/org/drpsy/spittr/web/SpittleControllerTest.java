@@ -11,7 +11,7 @@
 //import java.util.Date;
 //import java.util.List;
 //import org.drpsy.spittr.data.entities.Spittle;
-//import org.drpsy.spittr.data.repositories.SpittleRepository;
+//import org.drpsy.spittr.data.repositories.jpa.SpittleRepository;
 //import org.drpsy.spittr.web.controllers.SpittleController;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.test.web.servlet.MockMvc;

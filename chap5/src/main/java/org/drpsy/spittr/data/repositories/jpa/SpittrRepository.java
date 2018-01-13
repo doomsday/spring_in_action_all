@@ -1,4 +1,4 @@
-package org.drpsy.spittr.data.repositories;
+package org.drpsy.spittr.data.repositories.jpa;
 
 import javax.transaction.Transactional;
 import org.drpsy.spittr.data.entities.Spittr;

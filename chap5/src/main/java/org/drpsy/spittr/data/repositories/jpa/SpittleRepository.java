@@ -1,4 +1,4 @@
-package org.drpsy.spittr.data.repositories;
+package org.drpsy.spittr.data.repositories.jpa;
 
 import javax.transaction.Transactional;
 import org.drpsy.spittr.data.entities.Spittle;
@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Transactional
-public interface SpittleRepository extends PagingAndSortingRepository<Spittle, Long> {
-
-}
+public interface SpittleRepository extends PagingAndSortingRepository<Spittle, Long> {}

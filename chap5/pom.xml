@@ -58,6 +58,13 @@
       <version>${spring.data}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-mongodb</artifactId>
+      <version>${spring.data}</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
     <dependency>
       <groupId>com.querydsl</groupId>
