@@ -67,7 +67,7 @@ public class Spittr {
   @Field("photo_uuid")
   private String photoUUID;
 
-  private Set<String> roles = new HashSet<>(Collections.singleton("SPITTR"));
+  private Set<String> roles = new HashSet<>(Collections.singleton("ROLE_SPITTR"));
 
   public Spittr() {
   }
