@@ -1,9 +1,10 @@
-package org.drpsy.spittr.data.entities;
+package org.drpsy.spittr.data.mongo.documents;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -11,35 +12,34 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.validation.groups.StepTwo;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 /**
- * Created by drpsy on 16-Nov-17 (23:19).
+ * Created by drpsy on 14-Jan-18 (12:04).
  */
-@Entity
-@Table(name = "users")
+@Document
 public class Spittr {
 
-  @Id
   @NotNull(groups = StepOne.class)
-  @Size(min = 5, max = 50, message = "{userName.size}", groups = StepOne.class)
-  @Column(name = "username")
-  private String userName;
+  @Size(min = 5, max = 50, message = "{username.size}", groups = StepOne.class)
+  @Indexed(unique = true)
+  private String username;
 
   @NotNull(groups = StepOne.class)
   @Size(min = 5, max = 50, message = "{password.size}", groups = StepOne.class)
   private String password;
 
-  @NotNull(groups = StepTwo.class)
-  private Boolean enabled;
-
   @NotNull(groups = StepOne.class)
   @Size(min = 2, max = 50, message = "{firstName.size}", groups = StepOne.class)
-  @Column(name = "firstname")
   private String firstName;
 
   @NotNull(groups = StepOne.class)
   @Size(min = 2, max = 50, message = "{lastName.size}", groups = StepOne.class)
-  @Column(name = "lastname")
   private String lastName;
 
   @NotNull(groups = StepOne.class)
@@ -51,18 +51,75 @@ public class Spittr {
   private String email;
 
   @NotNull(groups = StepTwo.class)
+  private Boolean enabled = true;
+
+  @NotNull(groups = StepTwo.class)
+  private Boolean accountNonExpired = true;
+
+  @NotNull(groups = StepTwo.class)
+  private Boolean credentialsNonExpired = true;
+
+  @NotNull(groups = StepTwo.class)
+  private Boolean accountNonLocked = true;
+
+  @NotNull(groups = StepTwo.class)
   @Size(min = 36, max = 36, message = "{photoUUID.size}", groups = StepTwo.class)
-  @Column(name = "photo_uuid")
+  @Field("photo_uuid")
   private String photoUUID;
+
+  private Set<String> roles = new HashSet<>(Collections.singleton("SPITTR"));
 
   public Spittr() {
   }
 
-  public Spittr(String userName, String password, String firstName, String lastName) {
+  public User getUser() {
+    return new User(
+        this.username,
+        this.password,
+        this.enabled,
+        this.accountNonExpired,
+        this.credentialsNonExpired,
+        this.accountNonLocked,
+        getAuthorities(this));
+  }
+
+  public Spittr(String username, String password, String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.userName = userName;
+    this.username = username;
     this.password = password;
+  }
+
+  public Boolean getAccountNonLocked() {
+    return accountNonLocked;
+  }
+
+  public void setAccountNonLocked(Boolean accountNonLocked) {
+    this.accountNonLocked = accountNonLocked;
+  }
+
+  public Boolean getCredentialsNonExpired() {
+    return credentialsNonExpired;
+  }
+
+  public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+    this.credentialsNonExpired = credentialsNonExpired;
+  }
+
+  public Boolean getAccountNonExpired() {
+    return accountNonExpired;
+  }
+
+  public void setAccountNonExpired(Boolean accountNonExpired) {
+    this.accountNonExpired = accountNonExpired;
+  }
+
+  public Set<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<String> roles) {
+    this.roles = roles;
   }
 
   public String getPhotoUUID() {
@@ -89,12 +146,12 @@ public class Spittr {
     this.lastName = lastName;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getPassword() {
@@ -136,7 +193,7 @@ public class Spittr {
     return new EqualsBuilder()
         .append(firstName, spittr.firstName)
         .append(lastName, spittr.lastName)
-        .append(userName, spittr.userName)
+        .append(username, spittr.username)
         .append(password, spittr.password)
         .isEquals();
   }
@@ -146,9 +203,18 @@ public class Spittr {
     return new HashCodeBuilder(17, 37)
         .append(firstName)
         .append(lastName)
-        .append(userName)
+        .append(username)
         .append(password)
         .toHashCode();
+  }
+
+  private List<GrantedAuthority> getAuthorities(Spittr spittr) {
+    Set<String> roles = spittr.getRoles();
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (String role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role));
+    }
+    return authorities;
   }
 
 }

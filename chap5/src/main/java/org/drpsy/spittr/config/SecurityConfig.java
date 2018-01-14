@@ -1,6 +1,5 @@
 package org.drpsy.spittr.config;
 
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final DataSource dataSource;
+  @Autowired
+  private SecUserDetailsService userDetailsService;
 
   @Autowired
-  public SecurityConfig(DataSource dataSource) {
-    this.dataSource = dataSource;
+  public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
+    builder.userDetailsService(userDetailsService);
   }
 
   @Bean
@@ -81,8 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
     auth
-        .jdbcAuthentication()
-        .dataSource(dataSource)
+        .userDetailsService(userDetailsService)
         .passwordEncoder(new BCryptPasswordEncoder());
 
   }

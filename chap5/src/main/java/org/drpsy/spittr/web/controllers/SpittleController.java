@@ -4,6 +4,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
 import java.util.Optional;
+import org.drpsy.spittr.data.mongo.documents.Spittle;
+import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 // JPA version
 //import org.drpsy.spittr.data.repositories.jpa.SpittleRepository;
 //import org.drpsy.spittr.data.entities.Spittle;
-
 // MongoDB version
-import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
-import org.drpsy.spittr.data.mongo.documents.Spittle;
 
 /**
  * Created by drpsy on 11-Nov-17 (16:37).

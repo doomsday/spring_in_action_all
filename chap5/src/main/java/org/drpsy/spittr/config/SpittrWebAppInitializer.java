@@ -37,10 +37,12 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   // Enables support for multipart requests.
   @Override
   protected void customizeRegistration(Dynamic registration) {
+    PropertiesConfigReader props = new PropertiesConfigReader();
+
     registration.setMultipartConfig(
         new MultipartConfigElement(
             // {tmpdir}/spittr/uploads
-            System.getProperty("java.io.tmpdir") + "spittr/uploads",
+            props.getPropValue("tmp.dir").orElse(System.getProperty("java.io.tmpdir")) + "/spittr/uploads",
             2097152,
             4194304,
             0

@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import org.drpsy.spittr.config.PropertiesConfigReader;
-import org.drpsy.spittr.data.entities.Spittr;
-import org.drpsy.spittr.data.repositories.jpa.SpittrRepository;
+import org.drpsy.spittr.data.mongo.documents.Spittr;
+import org.drpsy.spittr.data.repositories.mongo.SpittrMongoRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SpittrController {
 
   @Autowired
-  private SpittrRepository spittrRepository;
+  private SpittrMongoRepository spittrRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -41,11 +41,11 @@ public class SpittrController {
   @Autowired
   private PropertiesConfigReader configReader;
 
-  // GET /spittr/{userName}
-  @RequestMapping(value = "/{userName}", method = GET)
-  public String showSpittrProfile(@PathVariable String userName, Model model) {
+  // GET /spittr/{username}
+  @RequestMapping(value = "/{username}", method = GET)
+  public String showSpittrProfile(@PathVariable String username, Model model) {
     if (!model.containsAttribute("spittr")) {
-      model.addAttribute(spittrRepository.findByUserName(userName));
+      model.addAttribute(spittrRepository.findByUsername(username));
     }
     return "profile";
   }
@@ -77,7 +77,7 @@ public class SpittrController {
       return "registerForm";  // Return back to the form on validation errors.
     }
 
-    if (spittrRepository.findByUserName(spittr.getUserName()) != null) {
+    if (spittrRepository.findByUsername(spittr.getUsername()) != null) {
       throw new DuplicateSpittrException();
     }
 
@@ -102,7 +102,7 @@ public class SpittrController {
     spittrRepository.save(spittr);
 
     // Preparing data for redirect URL template.
-    model.addAttribute("username", spittr.getUserName());
+    model.addAttribute("username", spittr.getUsername());
 
     // Sending actual Spittr object to redirect page.
     model.addFlashAttribute("spittr", spittr);

@@ -18,7 +18,7 @@ public class PropertiesConfigReader {
       return Optional.empty();
     }
 
-    InputStream is = this.getClass().getClassLoader().getResourceAsStream("config.properties");
+    InputStream is = this.getClass().getClassLoader().getResourceAsStream("application.properties");
 
     Properties prop = new Properties();
 
