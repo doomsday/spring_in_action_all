@@ -11,11 +11,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * Created by drpsy on 11-Nov-17 (13:56).
  */
-@Entity
 public class Spittle {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String message;

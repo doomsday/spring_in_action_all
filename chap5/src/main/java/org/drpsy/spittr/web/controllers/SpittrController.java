@@ -45,7 +45,7 @@ public class SpittrController {
   @RequestMapping(value = "/{userName}", method = GET)
   public String showSpittrProfile(@PathVariable String userName, Model model) {
     if (!model.containsAttribute("spittr")) {
-      model.addAttribute(spittrRepository.findByUserName(userName));
+      model.addAttribute(spittrRepository.findByUserName(userName).get());
     }
     return "profile";
   }
@@ -77,7 +77,7 @@ public class SpittrController {
       return "registerForm";  // Return back to the form on validation errors.
     }
 
-    if (spittrRepository.findByUserName(spittr.getUserName()) != null) {
+    if (spittrRepository.findByUserName(spittr.getUserName()).isPresent()) {
       throw new DuplicateSpittrException();
     }
 

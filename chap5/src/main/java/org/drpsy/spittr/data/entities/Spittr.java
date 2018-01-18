@@ -15,14 +15,11 @@ import org.drpsy.spittr.validation.groups.StepTwo;
 /**
  * Created by drpsy on 16-Nov-17 (23:19).
  */
-@Entity
-@Table(name = "users")
+
 public class Spittr {
 
-  @Id
   @NotNull(groups = StepOne.class)
   @Size(min = 5, max = 50, message = "{userName.size}", groups = StepOne.class)
-  @Column(name = "username")
   private String userName;
 
   @NotNull(groups = StepOne.class)
@@ -34,12 +31,10 @@ public class Spittr {
 
   @NotNull(groups = StepOne.class)
   @Size(min = 2, max = 50, message = "{firstName.size}", groups = StepOne.class)
-  @Column(name = "firstname")
   private String firstName;
 
   @NotNull(groups = StepOne.class)
   @Size(min = 2, max = 50, message = "{lastName.size}", groups = StepOne.class)
-  @Column(name = "lastname")
   private String lastName;
 
   @NotNull(groups = StepOne.class)
@@ -52,7 +47,6 @@ public class Spittr {
 
   @NotNull(groups = StepTwo.class)
   @Size(min = 36, max = 36, message = "{photoUUID.size}", groups = StepTwo.class)
-  @Column(name = "photo_uuid")
   private String photoUUID;
 
   public Spittr() {
