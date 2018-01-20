@@ -53,16 +53,17 @@ public class SpittleController {
   // GET /spittles/1
   @RequestMapping(value = "/{spittleId}", method = GET)
   public String spittle(
-      @PathVariable("spittleId") long spittleId, // PathVariable value can be omitted if the placeholder's name is the
+      @PathVariable("spittleId") String spittleId, // PathVariable value can be omitted if the placeholder's name is the
       // same as the method parameter name.
       Model model) {
 
     Optional<Spittle> spittle = spittleRepository.findById(spittleId);
     if (!spittle.isPresent()) {
       throw new SpittleNotFoundException();
+    } else {
+      model.addAttribute(spittle.get()); // Model key will be spittle, inferred by the type passed in 'addAttribute'.
     }
-
-    model.addAttribute(spittle); // Model key will be spittle, inferred by the type passed in 'addAttribute'.
+    
     return "spittle";
   }
 

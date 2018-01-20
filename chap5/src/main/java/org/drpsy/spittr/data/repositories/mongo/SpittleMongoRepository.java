@@ -8,4 +8,4 @@ import org.springframework.stereotype.Repository;
  * Created by drpsy on 13-Jan-18 (23:12).
  */
 @Repository
-public interface SpittleMongoRepository extends PagingAndSortingRepository<Spittle, Long> {}
+public interface SpittleMongoRepository extends PagingAndSortingRepository<Spittle, String> {}
