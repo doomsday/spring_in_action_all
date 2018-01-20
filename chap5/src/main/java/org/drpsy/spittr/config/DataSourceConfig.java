@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -29,8 +30,8 @@ public class DataSourceConfig {
   }
 
   @Bean
-  public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-    return new JdbcTemplate(dataSource);
+  public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
+    return new NamedParameterJdbcTemplate(dataSource);
   }
 
   // This is the central interface in Spring's transaction infrastructure. Applications can use this directly, but it

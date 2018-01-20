@@ -51,16 +51,16 @@ public class SpittleController {
     Optional<Spittle> spittle = spittleRepository.findById(spittleId);
     if (!spittle.isPresent()) {
       throw new SpittleNotFoundException();
+    } else {
+      model.addAttribute(spittle.get()); // Model key will be spittle, inferred by the type passed in 'addAttribute'.
     }
 
-    model.addAttribute(spittle); // Model key will be spittle, inferred by the type passed in 'addAttribute'.
     return "spittle";
   }
 
   // POST /spittles
   @RequestMapping(method = RequestMethod.POST)
   public String saveSpittle(SpittleForm form) {
-
     spittleRepository.save(new Spittle(null, form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
     return "redirect:/spittles";
   }

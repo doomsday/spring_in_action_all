@@ -38,20 +38,32 @@ public class Spittle {
     this.id = id;
     this.message = message;
     this.time = time;
-    this.setLongitude(longitude);
-    this.setLatitude(latitude);
+    this.longitude = longitude;
+    this.latitude = latitude;
   }
 
   public Long getId() {
     return id;
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public String getMessage() {
     return message;
   }
 
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
   public Date getTime() {
     return time;
+  }
+
+  public void setTime(Date time) {
+    this.time = time;
   }
 
   public Double getLatitude() {
