@@ -19,8 +19,8 @@ import org.drpsy.spittr.validation.groups.StepTwo;
 public class Spittr {
 
   @NotNull(groups = StepOne.class)
-  @Size(min = 5, max = 50, message = "{userName.size}", groups = StepOne.class)
-  private String userName;
+  @Size(min = 5, max = 50, message = "{username.size}", groups = StepOne.class)
+  private String username;
 
   @NotNull(groups = StepOne.class)
   @Size(min = 5, max = 50, message = "{password.size}", groups = StepOne.class)
@@ -52,10 +52,10 @@ public class Spittr {
   public Spittr() {
   }
 
-  public Spittr(String userName, String password, String firstName, String lastName) {
+  public Spittr(String username, String password, String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.userName = userName;
+    this.username = username;
     this.password = password;
   }
 
@@ -83,12 +83,12 @@ public class Spittr {
     this.lastName = lastName;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getPassword() {
@@ -130,7 +130,7 @@ public class Spittr {
     return new EqualsBuilder()
         .append(firstName, spittr.firstName)
         .append(lastName, spittr.lastName)
-        .append(userName, spittr.userName)
+        .append(username, spittr.username)
         .append(password, spittr.password)
         .isEquals();
   }
@@ -140,7 +140,7 @@ public class Spittr {
     return new HashCodeBuilder(17, 37)
         .append(firstName)
         .append(lastName)
-        .append(userName)
+        .append(username)
         .append(password)
         .toHashCode();
   }

@@ -41,11 +41,11 @@ public class SpittrController {
   @Autowired
   private PropertiesConfigReader configReader;
 
-  // GET /spittr/{userName}
-  @RequestMapping(value = "/{userName}", method = GET)
-  public String showSpittrProfile(@PathVariable String userName, Model model) {
+  // GET /spittr/{username}
+  @RequestMapping(value = "/{username}", method = GET)
+  public String showSpittrProfile(@PathVariable String username, Model model) {
     if (!model.containsAttribute("spittr")) {
-      model.addAttribute(spittrRepository.findByUserName(userName).get());
+      model.addAttribute(spittrRepository.findByUsername(username).get());
     }
     return "profile";
   }
@@ -77,7 +77,7 @@ public class SpittrController {
       return "registerForm";  // Return back to the form on validation errors.
     }
 
-    if (spittrRepository.findByUserName(spittr.getUserName()).isPresent()) {
+    if (spittrRepository.findByUsername(spittr.getUsername()).isPresent()) {
       throw new DuplicateSpittrException();
     }
 
@@ -102,7 +102,7 @@ public class SpittrController {
     spittrRepository.save(spittr);
 
     // Preparing data for redirect URL template.
-    model.addAttribute("username", spittr.getUserName());
+    model.addAttribute("username", spittr.getUsername());
 
     // Sending actual Spittr object to redirect page.
     model.addFlashAttribute("spittr", spittr);

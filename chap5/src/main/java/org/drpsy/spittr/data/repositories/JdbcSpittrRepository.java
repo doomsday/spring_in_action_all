@@ -1,7 +1,10 @@
 package org.drpsy.spittr.data.repositories;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.drpsy.spittr.data.entities.Spittle;
 import org.drpsy.spittr.data.entities.Spittr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,35 +18,40 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public class JdbcSpittrRepository implements SpittrRepository {
 
+  // Catches any SQLExceptions and then translates it into one of the more specific
+  // data-access exceptions.
   @Autowired
   private JdbcOperations jdbcOperations;
 
   private static final String INSERT_SPITTR =
-      "INSERT INTO users (username, password, enabled, firstname, lastname, email, photo_uuid) "
-          + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO `users` (`username`, `password`, `enabled`, `firstname`, `lastname`, `email`, `photo_uuid`) "
+          + "VALUES (:username, :password, :enabled, :firstname, :lastname, :email, :photo_uuid)";
 
   private static final String FIND_BY_USERNAME =
-      "SELECT * FROM users WHERE username = ?";
+      "SELECT * FROM `users` WHERE `username` = :username";
 
   @Override
-  public Optional<Spittr> findByUserName(String userName) {
+  public Optional<Spittr> findByUsername(String username) {
     try {
-      return Optional.ofNullable(jdbcOperations.queryForObject(FIND_BY_USERNAME, Spittr.class, userName));
+      return Optional.ofNullable(jdbcOperations.queryForObject(FIND_BY_USERNAME, Spittr.class, username));
     } catch (EmptyResultDataAccessException ignored) {
       return Optional.empty();
     }
   }
 
+  // When the update() method is called, JdbcTemplate gets a connection,
+  // creates a statement, and executes the insert SQL.
   @Override
   public void save(Spittr spittr) {
-    jdbcOperations.update(INSERT_SPITTR,
-        spittr.getUserName(),
-        spittr.getPassword(),
-        spittr.getEnabled(),
-        spittr.getFirstName(),
-        spittr.getLastName(),
-        spittr.getEmail(),
-        spittr.getPhotoUUID()
-    );
+    Map<String, Object> params = new HashMap<>();
+    params.put("username", spittr.getUsername());
+    params.put("password", spittr.getPassword());
+    params.put("enabled", spittr.getEnabled());
+    params.put("firstname", spittr.getFirstName());
+    params.put("lastname", spittr.getLastName());
+    params.put("email", spittr.getEmail());
+    params.put("photo_uuid", spittr.getPhotoUUID());
+
+    jdbcOperations.update(INSERT_SPITTR, params);
   }
 }

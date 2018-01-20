@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 public interface SpittrRepository {
 
-  Optional<Spittr> findByUserName(String userName);
+  Optional<Spittr> findByUsername(String username);
 
   void save(Spittr spittr);
 }
