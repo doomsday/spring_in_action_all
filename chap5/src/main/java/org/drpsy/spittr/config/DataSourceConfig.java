@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -25,7 +28,8 @@ public class DataSourceConfig {
   @Bean
   public DataSource dataSource() {
     JndiDataSourceLookup jndiDataSourceLookup = new JndiDataSourceLookup();
-    return jndiDataSourceLookup.getDataSource("jdbc/MySQLSpittr");
+    
+    return jndiDataSourceLookup.getDataSource("jdbc/MySQLSpittrDS");
   }
 
   // FactoryBean that creates a JPA EntityManagerFactory
@@ -36,7 +40,7 @@ public class DataSourceConfig {
     LocalContainerEntityManagerFactoryBean lcem = new LocalContainerEntityManagerFactoryBean();
     lcem.setDataSource(dataSource);
     lcem.setPackagesToScan("org.drpsy.spittr.data.entities");
-    lcem.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+    lcem.setJpaVendorAdapter(jpaVendorAdapter());
     lcem.setPersistenceUnitName("spittr");
     lcem.setJpaProperties(additionalProperties());
 
@@ -55,13 +59,29 @@ public class DataSourceConfig {
   // to any bean marked with Spring's @Repository annotation.
   @Bean
   public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+
     return new PersistenceExceptionTranslationPostProcessor();
+  }
+
+  @Bean
+  public JpaVendorAdapter jpaVendorAdapter() {
+    HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+    adapter.setDatabase(Database.MYSQL);
+    adapter.setDatabasePlatform("org.hibernate.dialect.MySQL5Dialect");
+    adapter.setShowSql(true);
+    adapter.setGenerateDdl(false);
+
+    return adapter;
+  }
+
+  // Processes PersistenceUnit and PersistenceContext annotations, for injection of the corresponding JPA resources.
+  @Bean
+  public PersistenceAnnotationBeanPostProcessor paPostProcessor() {
+    return new PersistenceAnnotationBeanPostProcessor();
   }
 
   private Properties additionalProperties() {
     Properties jpaProperties = new Properties();
-    jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-    jpaProperties.setProperty("hibernate.show_sql", "true");
     jpaProperties.setProperty("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
     jpaProperties.setProperty("hibernate.connection.charSet", "UTF-8");
     jpaProperties.setProperty("hibernate.validator.apply_to_ddl", "false");
