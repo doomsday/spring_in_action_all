@@ -1,7 +1,9 @@
 package org.drpsy.spittr.data.repositories;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import org.drpsy.spittr.data.entities.Spittr;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +15,9 @@ import org.springframework.stereotype.Repository;
 public interface SpittrRepository extends CrudRepository<Spittr, Long> {
 
   Spittr findByUserName(String userName);
+
+  @Query("SELECT s FROM Spittr s WHERE s.email LIKE '%gmail.com'")
+
+  List<Spittr> findSpittrByGmail();
 
 }

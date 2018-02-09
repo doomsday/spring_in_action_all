@@ -12,6 +12,7 @@ import org.drpsy.spittr.config.PropertiesConfigReader;
 import org.drpsy.spittr.data.entities.Spittr;
 import org.drpsy.spittr.data.repositories.SpittrRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
+import org.drpsy.spittr.web.SpittrStatuses;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,6 +95,9 @@ public class SpittrController {
     } else {
       spittr.setPhotoUUID("00000000-0000-0000-0000-000000000000");
     }
+
+    // Initial status.
+    spittr.setStatus(SpittrStatuses.NEWBIE);
 
     // Enabled processing.
     spittr.setEnabled(true);

@@ -55,6 +55,10 @@ public class Spittr {
   @Column(name = "photo_uuid")
   private String photoUUID;
 
+  @NotNull(groups = StepTwo.class)
+  @Size(min = 1, max = 255, message = "{status.size}", groups = StepTwo.class)
+  private String status;
+
   public Spittr() {
   }
 
@@ -119,6 +123,14 @@ public class Spittr {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   @Override

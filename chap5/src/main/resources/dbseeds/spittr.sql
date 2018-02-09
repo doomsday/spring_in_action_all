@@ -76,6 +76,7 @@ CREATE TABLE users
   lastname   CHAR(50)               NOT NULL,
   email      CHAR(50)               NOT NULL,
   photo_uuid CHAR(36)               NOT NULL,
+  status     CHAR(255)              NOT NULL,
   CONSTRAINT users_username_uindex
   UNIQUE (username),
   CONSTRAINT users_email_uindex
