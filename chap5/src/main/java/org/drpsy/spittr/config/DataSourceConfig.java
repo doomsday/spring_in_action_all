@@ -20,7 +20,9 @@ import org.springframework.transaction.jta.JtaTransactionManager;
  * Created by drpsy on 17-Dec-17 (19:19).
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "org.drpsy.spittr.data.repositories")
+@EnableJpaRepositories(
+    basePackages = "org.drpsy.spittr.data.repositories",
+    repositoryImplementationPostfix="Helper")
 @EnableTransactionManagement
 public class DataSourceConfig {
 

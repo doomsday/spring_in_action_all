@@ -12,12 +12,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Transactional
-public interface SpittrRepository extends CrudRepository<Spittr, Long> {
+public interface SpittrRepository extends CrudRepository<Spittr, Long>, SpitterSweeper {
 
   Spittr findByUserName(String userName);
 
   @Query("SELECT s FROM Spittr s WHERE s.email LIKE '%gmail.com'")
-
   List<Spittr> findSpittrByGmail();
 
 }

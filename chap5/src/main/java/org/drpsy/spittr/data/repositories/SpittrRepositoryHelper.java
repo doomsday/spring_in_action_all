@@ -7,12 +7,12 @@ import org.drpsy.spittr.web.SpittrStatuses;
 /**
  * Created by drpsy on 10-Feb-18 (01:00).
  */
-public class SpittrRepositoryImpl {
+public class SpittrRepositoryHelper implements SpitterSweeper {
 
   @PersistenceContext
   private EntityManager em;
 
-  public int eliteSwap() {
+  public int eliteSweep() {
     return em.createQuery(
         "UPDATE Spittr s "
             + "SET s.status = '" + SpittrStatuses.ELITE + "' "
