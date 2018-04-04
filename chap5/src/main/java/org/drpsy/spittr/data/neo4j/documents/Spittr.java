@@ -1,4 +1,4 @@
-package org.drpsy.spittr.data.mongo.documents;
+package org.drpsy.spittr.data.neo4j.documents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,9 +12,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.validation.groups.StepTwo;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -22,12 +22,14 @@ import org.springframework.security.core.userdetails.User;
 /**
  * Created by drpsy on 14-Jan-18 (12:04).
  */
-@Document
+@NodeEntity
 public class Spittr {
+
+  @Id @GeneratedValue
+  private Long id;
 
   @NotNull(groups = StepOne.class)
   @Size(min = 5, max = 50, message = "{username.size}", groups = StepOne.class)
-  @Indexed(unique = true)
   private String username;
 
   @NotNull(groups = StepOne.class)
@@ -64,12 +66,18 @@ public class Spittr {
 
   @NotNull(groups = StepTwo.class)
   @Size(min = 36, max = 36, message = "{photoUUID.size}", groups = StepTwo.class)
-  @Field("photo_uuid")
   private String photoUUID;
 
   private Set<String> roles = new HashSet<>(Collections.singleton("ROLE_SPITTR"));
 
   public Spittr() {
+  }
+
+  public Spittr(String username, String password, String firstName, String lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.password = password;
   }
 
   public User getUser() {
@@ -81,13 +89,6 @@ public class Spittr {
         this.credentialsNonExpired,
         this.accountNonLocked,
         getAuthorities(this));
-  }
-
-  public Spittr(String username, String password, String firstName, String lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.password = password;
   }
 
   public Boolean getAccountNonLocked() {
@@ -176,6 +177,14 @@ public class Spittr {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   @Override

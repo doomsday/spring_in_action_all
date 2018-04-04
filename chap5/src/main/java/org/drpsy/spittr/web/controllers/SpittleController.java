@@ -4,8 +4,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
 import java.util.Optional;
-import org.drpsy.spittr.data.mongo.documents.Spittle;
-import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
+import org.drpsy.spittr.data.neo4j.documents.Spittle;
+import org.drpsy.spittr.data.repositories.neo4j.SpittleNeo4jRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/spittles")
 public class SpittleController {
 
-//  @Autowired
-//  private SpittleRepository spittleRepository;
-
   @Autowired
-  private SpittleMongoRepository spittleRepository;
+  private SpittleNeo4jRepository spittleRepository;
 
   // GET /spittles
   @RequestMapping(method = GET)

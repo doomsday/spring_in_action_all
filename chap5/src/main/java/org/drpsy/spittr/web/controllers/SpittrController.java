@@ -5,15 +5,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
-import org.drpsy.spittr.config.PropertiesConfigReader;
-import org.drpsy.spittr.data.mongo.documents.Spittr;
-import org.drpsy.spittr.data.repositories.mongo.SpittrMongoRepository;
+import org.drpsy.spittr.data.neo4j.documents.Spittr;
+import org.drpsy.spittr.data.repositories.neo4j.SpittrNeo4jRepository;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +32,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SpittrController {
 
   @Autowired
-  private SpittrMongoRepository spittrRepository;
+  private Environment env;
+
+  @Autowired
+  private SpittrNeo4jRepository spittrRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-
-  @Autowired
-  private PropertiesConfigReader configReader;
 
   // GET /spittr/{username}
   @RequestMapping(value = "/{username}", method = GET)
@@ -69,7 +68,7 @@ public class SpittrController {
       @Validated(StepOne.class) Spittr spittr,  // Indicate to Spring that the command obj. has valid. constraints that
       // should be enforced.
       Errors errors)                            // If there are any validation errors, they're available in the
-  // Errors object.
+                                                // Errors object.
       throws IOException {
 
     // Validation.
@@ -85,8 +84,8 @@ public class SpittrController {
     spittr.setPassword(passwordEncoder.encode(spittr.getPassword()));
 
     // Photo processing.
-    Optional<String> photoSaveDir = configReader.getPropValue("photo.save.dir");
-    if (!profilePicture.isEmpty() && photoSaveDir.isPresent()) {
+    String photoSaveDir = env.getProperty("photo.save.dir", System.getProperty("java.io.tmpdir"));
+    if (!profilePicture.isEmpty()) {
       // {tmpdir}/spittr/uploads/data/spittr
       String uuid = UUID.randomUUID().toString();
       profilePicture.transferTo(new File(photoSaveDir + "/" + uuid));

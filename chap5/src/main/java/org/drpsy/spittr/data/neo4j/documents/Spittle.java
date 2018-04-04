@@ -1,23 +1,25 @@
-package org.drpsy.spittr.data.mongo.documents;
+package org.drpsy.spittr.data.neo4j.documents;
 
 import java.util.Date;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by drpsy on 13-Jan-18 (22:45).
  */
 
-@Document(collection = "spittle")
+@NodeEntity
 public class Spittle {
 
-  @Id
-  private ObjectId id;
+  @Id @GeneratedValue
+  private Long id;
 
   private String message;
 
+  @DateLong
   private Date time;
 
   private Double latitude;
@@ -27,11 +29,6 @@ public class Spittle {
   public Spittle() {}
 
   @PersistenceConstructor
-  public Spittle(String message, Date time) {
-    this(message, time, null, null);
-  }
-
-  @PersistenceConstructor
   public Spittle(String message, Date time, Double longitude, Double latitude) {
     this.message = message;
     this.time = time;
@@ -39,11 +36,11 @@ public class Spittle {
     this.setLatitude(latitude);
   }
 
-  public ObjectId getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(ObjectId id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
