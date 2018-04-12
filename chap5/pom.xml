@@ -30,7 +30,7 @@
   <properties>
     <version.java>1.8</version.java>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>5.0.2.RELEASE</spring.version>
+    <spring.version>5.0.5.RELEASE</spring.version>
     <spring.security.version>5.0.0.RELEASE</spring.security.version>
     <spring.data>2.0.2.RELEASE</spring.data>
     <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
@@ -44,11 +44,34 @@
       <version>${spring.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.0.5.RELEASE</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-rest-webmvc -->
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-rest-webmvc</artifactId>
       <version>3.0.2.RELEASE</version>
+    </dependency>
+
+    <!-- Ehcache -->
+
+    <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
+    <dependency>
+      <groupId>org.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>3.5.2</version>
+    </dependency>
+
+    <!-- JSR107 API (Cache) -->
+    <dependency>
+      <groupId>javax.cache</groupId>
+      <artifactId>cache-api</artifactId>
+      <version>1.1.0</version>
     </dependency>
 
     <!-- NEO4J -->
@@ -73,7 +96,6 @@
       <artifactId>neo4j-ogm-bolt-driver</artifactId>
       <version>3.1.0</version>
     </dependency>
-
 
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -179,6 +201,21 @@
       <artifactId>javaee-web-api</artifactId>
       <version>7.0</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- Redis -->
+
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>2.0.6.RELEASE</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.9.0</version>
     </dependency>
 
   </dependencies>

@@ -1,5 +1,6 @@
 package org.drpsy.spittr.data.neo4j.documents;
 
+import java.io.Serializable;
 import java.util.Date;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -12,7 +13,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
  */
 
 @NodeEntity
-public class Spittle {
+public class Spittle implements Serializable {
 
   @Id @GeneratedValue
   private Long id;
