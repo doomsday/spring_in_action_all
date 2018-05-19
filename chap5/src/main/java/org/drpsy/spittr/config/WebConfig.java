@@ -94,5 +94,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
   public MultipartResolver multipartResolver() {
     return new StandardServletMultipartResolver();
   }
+//
+//  @Bean
+//  public Validator validatorFactory() {
+//    return new LocalValidatorFactoryBean();
+//  }
 
 }

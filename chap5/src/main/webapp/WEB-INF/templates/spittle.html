@@ -19,6 +19,9 @@
             <div>
                 <span th:class="spittleTime" th:remove="tag" th:inline="text">[[${spittle.time}]]</span>
             </div>
+            <form th:method="delete" th:action="@{/spittles/delete/{spittleId}(spittleId=${spittle.id})}">
+                <button type="submit" onClick="return confirm('Sure delete?')">Delete</button>
+            </form>
         </div>
     </div>
 

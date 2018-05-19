@@ -5,12 +5,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.util.Date;
 import java.util.Optional;
 import org.drpsy.spittr.data.neo4j.documents.Spittle;
-import org.drpsy.spittr.data.repositories.neo4j.SpittleNeo4jRepository;
+import org.drpsy.spittr.data.neo4j.documents.Spittr;
+import org.drpsy.spittr.data.repositories.neo4j.SpittleNeo4jRepositoryWrapper;
+import org.drpsy.spittr.data.repositories.neo4j.SpittrNeo4jRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +36,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SpittleController {
 
   @Autowired
-  private SpittleNeo4jRepository spittleRepository;
+  private SpittleNeo4jRepositoryWrapper spittleRepository;
+
+  @Autowired
+  private SpittrNeo4jRepository spittrRepository;
 
   // GET /spittles
   @RequestMapping(method = GET)
@@ -68,8 +76,33 @@ public class SpittleController {
   // POST /spittles
   @RequestMapping(method = RequestMethod.POST)
   public String saveSpittle(SpittleForm form) {
+    UserDetails currentUserDetails
+        = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
+    String username = currentUserDetails.getUsername();
+    Spittr currentSpittr = spittrRepository.findByUsername(username);
+
+    if (currentSpittr == null) {
+      throw new UsernameNotFoundException(username);
+    }
+
+    spittleRepository.save(
+        new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude(), currentSpittr)
+    );
+    return "redirect:/spittles";
+  }
+
+  // DELETE /spittles/1
+  @RequestMapping(value = "/delete/{spittleId}", method = RequestMethod.DELETE)
+  public String delete(@PathVariable Long spittleId) {
+
+    Optional<Spittle> spittle = spittleRepository.findById(spittleId);
+    if(!spittle.isPresent()) {
+      throw new SpittleNotFoundException();
+    } else {
+      spittleRepository.delete(spittle.get());
+    }
+
     return "redirect:/spittles";
   }
 

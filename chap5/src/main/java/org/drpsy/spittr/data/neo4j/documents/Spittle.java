@@ -5,6 +5,7 @@ import java.util.Date;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.springframework.data.annotation.PersistenceConstructor;
 
@@ -27,14 +28,18 @@ public class Spittle implements Serializable {
 
   private Double longitude;
 
+  @Relationship
+  private Spittr author;
+
   public Spittle() {}
 
   @PersistenceConstructor
-  public Spittle(String message, Date time, Double longitude, Double latitude) {
+  public Spittle(String message, Date time, Double longitude, Double latitude, Spittr author) {
     this.message = message;
     this.time = time;
     this.setLongitude(longitude);
     this.setLatitude(latitude);
+    this.setAuthor(author);
   }
 
   public Long getId() {
@@ -75,5 +80,13 @@ public class Spittle implements Serializable {
 
   public void setLongitude(Double longitude) {
     this.longitude = longitude;
+  }
+
+  public Spittr getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(Spittr author) {
+    this.author = author;
   }
 }

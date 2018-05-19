@@ -1,7 +1,10 @@
 package org.drpsy.spittr.config;
 
+import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -32,6 +35,19 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   @Override
   protected Class<?>[] getRootConfigClasses() {
     return new Class<?>[]{RootConfig.class};
+  }
+
+  // Specify filters.
+  @Override
+  protected Filter[] getServletFilters() {
+    // Encoding filter
+    CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+    characterEncodingFilter.setEncoding("UTF-8");
+    characterEncodingFilter.setForceEncoding(true);
+
+    // Adds support for HTTP methods DELETE, PUT etc.
+    HiddenHttpMethodFilter httpMethodFilter = new HiddenHttpMethodFilter();
+    return new Filter[]{characterEncodingFilter, httpMethodFilter};
   }
 
   // Enables support for multipart requests.
