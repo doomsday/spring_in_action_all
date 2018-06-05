@@ -1,10 +1,14 @@
 package org.drpsy.spittr.config;
 
+import java.util.Properties;
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -20,7 +24,7 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   // Map DispatcherServlet to. '/' indicating that it is the application's default servlet.
   @Override
   protected String[] getServletMappings() {
-    return new String[]{"/"};
+    return new String[]{"/", "*.service"};
   }
 
   // Load beans containing web components: controllers, view resolvers and handler mappings.

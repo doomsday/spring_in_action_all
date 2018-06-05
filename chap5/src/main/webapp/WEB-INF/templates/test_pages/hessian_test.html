@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Spittr</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>   <!-- th:href link to stylesheet -->
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div id="header" th:include="page :: header"></div>
+
+<div id="content">
+    <h1 th:text="#{spittr.welcome}"></h1>
+    <p>"#{spittr.lastName}"</p>
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
+
+</body>
+</html>

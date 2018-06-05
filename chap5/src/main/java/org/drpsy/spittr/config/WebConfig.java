@@ -1,5 +1,6 @@
 package org.drpsy.spittr.config;
 
+import java.util.Properties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -9,11 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -71,6 +74,16 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
   @Override
   public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
     configurer.enable();
+  }
+
+  // Configure a URL mapping for DispatcherServlet
+  @Bean
+  public HandlerMapping handlerMapping() {
+    SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
+    Properties mappings = new Properties();
+    mappings.setProperty("/spittr.service", "hessianExportedSpittrService");
+    mapping.setMappings(mappings);
+    return mapping;
   }
 
   // Serve static resources.
