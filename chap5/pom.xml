@@ -30,7 +30,6 @@
   <properties>
     <version.java>1.8</version.java>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>5.0.2.RELEASE</spring.version>
     <spring.security.version>5.0.0.RELEASE</spring.security.version>
     <spring.data>2.0.2.RELEASE</spring.data>
     <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
@@ -138,7 +137,7 @@
     <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring3 -->
     <dependency>
       <groupId>org.thymeleaf</groupId>
-      <artifactId>thymeleaf-spring4</artifactId>
+      <artifactId>thymeleaf-spring5</artifactId>
       <version>${thymeleaf.version}</version>
     </dependency>
 

@@ -7,18 +7,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.TemplateEngine;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.spring5.ISpringTemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
@@ -28,13 +35,40 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.drpsy.spittr.web")
-public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
 
   private ApplicationContext applicationContext;
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
+  }
+
+  // Get a ContentNegotiationManager. ContentNegotiationConfigurer has several methods that mirror the setter methods
+  // of ContentNegotiationManager and enable you to set whatever content-negotiation behavior you’d like on the
+  // ContentNegotiationManager that will be created.
+  @Override
+  public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+    configurer.defaultContentType(MediaType.TEXT_HTML); // Default to HTML
+  }
+
+  @Bean
+  public View spittles() {
+    return new MappingJackson2JsonView(); // 'spittles' JSON view
+  }
+
+  @Bean
+  public ViewResolver beanNameViewResolver() {
+    return new BeanNameViewResolver();  // Look up views as beans
+  }
+
+  // Configure and get ContentNegotiatingViewResolver. ContentNegotiatingViewResolver doesn't resolve views on its own.
+  // Instead, it delegates to other view resolvers, asking them to resolve the view.
+  @Bean
+  public ViewResolver cnViewResolver(ContentNegotiationManager cnm) {
+    ContentNegotiatingViewResolver cnvr = new ContentNegotiatingViewResolver();
+    cnvr.setContentNegotiationManager(cnm);
+    return cnvr;
   }
 
   // Resolves Thymeleaf template views from logical view names.
@@ -48,7 +82,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
   // Process the templates and render the results.
   @Bean
-  public TemplateEngine templateEngine() {
+  public ISpringTemplateEngine templateEngine() {
     SpringTemplateEngine engine = new SpringTemplateEngine();
     engine.setEnableSpringELCompiler(true);
     engine.setTemplateResolver(templateResolver());
