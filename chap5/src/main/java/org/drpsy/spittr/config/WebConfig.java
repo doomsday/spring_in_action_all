@@ -21,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -86,7 +85,7 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
     SpringTemplateEngine engine = new SpringTemplateEngine();
     engine.setEnableSpringELCompiler(true);
     engine.setTemplateResolver(templateResolver());
-    engine.addDialect(new SpringSecurityDialect());
+//    engine.addDialect(new SpringSecurityDialect());
     return engine;
   }
 

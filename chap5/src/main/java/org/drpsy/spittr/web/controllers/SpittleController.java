@@ -3,6 +3,7 @@ package org.drpsy.spittr.web.controllers;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import org.drpsy.spittr.data.mongo.documents.Spittle;
 import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
@@ -14,9 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 // JPA version
 //import org.drpsy.spittr.data.repositories.jpa.SpittleRepository;
@@ -30,11 +33,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/spittles")
 public class SpittleController {
 
-//  @Autowired
-//  private SpittleRepository spittleRepository;
-
   @Autowired
   private SpittleMongoRepository spittleRepository;
+
+  //================================================================================
+  // HTTP
+  //================================================================================
 
   // GET /spittles
   @RequestMapping(method = GET)
@@ -63,7 +67,7 @@ public class SpittleController {
     } else {
       model.addAttribute(spittle.get()); // Model key will be spittle, inferred by the type passed in 'addAttribute'.
     }
-    
+
     return "spittle";
   }
 
@@ -73,6 +77,25 @@ public class SpittleController {
 
     spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
     return "redirect:/spittles";
+  }
+
+  //================================================================================
+  // JSON
+  //================================================================================
+
+  // GET /spittles (Accept:application/json)
+  @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+  public @ResponseBody
+  List<Spittle> spittles(
+      @RequestParam(value = "page", defaultValue = "0") int page,
+      @RequestParam(value = "count", defaultValue = "20") int count) {
+    return spittleRepository.findAll(PageRequest.of(page, count)).getContent();
+  }
+
+  // POST /spittles
+  @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+  public @ResponseBody Spittle saveSpittle(@RequestBody Spittle spittle) {
+    return spittleRepository.save(spittle);
   }
 
 }
