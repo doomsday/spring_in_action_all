@@ -1,5 +1,6 @@
 package org.drpsy.spittr.data.mongo.documents;
 
+import java.io.Serializable;
 import java.util.Date;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 @Document(collection = "spittle")
-public class Spittle {
+public class Spittle implements Serializable {
 
   @Id
   private ObjectId id;

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import org.drpsy.spittr.data.mongo.documents.Spittle;
 import org.drpsy.spittr.data.repositories.mongo.SpittleMongoRepository;
+import org.drpsy.spittr.messaging.AlertService;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class SpittleController {
 
   @Autowired
   private SpittleMongoRepository spittleRepository;
+
+  @Autowired
+  private AlertService alertService;
 
   //================================================================================
   // HTTP
@@ -74,8 +78,9 @@ public class SpittleController {
   // POST /spittles
   @RequestMapping(method = RequestMethod.POST)
   public String saveSpittle(SpittleForm form) {
-
-    spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
+    Spittle newSpittle = new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude());
+    spittleRepository.save(newSpittle);
+    alertService.sendSpittleAlert(newSpittle);
     return "redirect:/spittles";
   }
 
