@@ -5,15 +5,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 import javax.transaction.Transactional;
-import org.drpsy.spittr.config.PropertiesConfigReader;
+import org.apache.logging.log4j.util.Strings;
 import org.drpsy.spittr.data.mongo.documents.Spittr;
 import org.drpsy.spittr.data.repositories.mongo.SpittrMongoRepository;
+import org.drpsy.spittr.messaging.AlertService;
 import org.drpsy.spittr.validation.groups.StepOne;
 import org.drpsy.spittr.web.exceptions.DuplicateSpittrException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,10 @@ public class SpittrController {
   private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private PropertiesConfigReader configReader;
+  private AlertService alertService;
+
+  @Value("${photo.save.dir}")
+  private String photoSaveDir;
 
   // GET /spittr/{username}
   @RequestMapping(value = "/{username}", method = GET)
@@ -85,11 +89,10 @@ public class SpittrController {
     spittr.setPassword(passwordEncoder.encode(spittr.getPassword()));
 
     // Photo processing.
-    Optional<String> photoSaveDir = configReader.getPropValue("photo.save.dir");
-    if (!profilePicture.isEmpty() && photoSaveDir.isPresent()) {
-      // {tmpdir}/spittr/uploads/data/spittr
+    if (!profilePicture.isEmpty() && !Strings.isEmpty(photoSaveDir)) {
+      // d:\Projects\java\_test_files\spittr_photos\7c346e8b-b77f-44ba-b355-a1f9d0780e33
       String uuid = UUID.randomUUID().toString();
-      profilePicture.transferTo(new File(photoSaveDir + "/" + uuid));
+      profilePicture.transferTo(new File(photoSaveDir + "/" + uuid + "_" + profilePicture.getOriginalFilename()));
       spittr.setPhotoUUID(uuid);
     } else {
       spittr.setPhotoUUID("00000000-0000-0000-0000-000000000000");
@@ -100,6 +103,9 @@ public class SpittrController {
 
     // Persisting user.
     spittrRepository.save(spittr);
+
+    // Send alert (AMQP)
+    alertService.sendSpittrAlert(spittr);
 
     // Preparing data for redirect URL template.
     model.addAttribute("username", spittr.getUsername());

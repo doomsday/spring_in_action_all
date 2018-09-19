@@ -1,15 +1,13 @@
-package org.drpsy.spittr.config;
+package org.drpsy.spittr.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
-import org.springframework.stereotype.Component;
 
 /**
- * Created by drpsy on 20-Dec-17 (01:03).
+ * Created by drpsy on 19-Sep-18 (13:32).
  */
-@Component
 public class PropertiesConfigReader {
 
   public Optional<String> getPropValue(String propKey) {

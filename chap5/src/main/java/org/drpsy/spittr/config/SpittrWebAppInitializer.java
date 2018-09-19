@@ -2,6 +2,7 @@ package org.drpsy.spittr.config;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
+import org.drpsy.spittr.utils.PropertiesConfigReader;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -13,6 +14,19 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * Under the covers, DispatcherServlet and ContextLoadListener will be created.
  */
 public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+  /*
+  The javadoc for Part.write() says it will write relative to the MultipartConfig.location. I bet your configuration has
+  MultipartConfig.location set to java.io.tmpdir (the default value), hence why your transferTo() is prefixed with
+  "/tmp" [https://dev.eclipse.org/mhonarc/lists/jetty-users/msg08332.html]
+   */
+
+  private final String TMP_LOCATION = new PropertiesConfigReader()
+      .getPropValue("tmp.dir")
+      .orElse(System.getProperty("java.io.tmpdir")); // Temporary location where files will be stored
+  private static final long MAX_FILE_SIZE = 5242880; // 5MB : Max file size. Beyond that size spring will throw exception.
+  private static final long MAX_REQUEST_SIZE = 20971520; // 20MB : Total request size containing Multi part.
+  private static final int FILE_SIZE_THRESHOLD = 0; // Size threshold after which files will be written to disk
 
   // Map DispatcherServlet to. '/' indicating that it is the application's default servlet.
   @Override
@@ -37,16 +51,8 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
   // Enables support for multipart requests.
   @Override
   protected void customizeRegistration(Dynamic registration) {
-    PropertiesConfigReader props = new PropertiesConfigReader();
-
     registration.setMultipartConfig(
-        new MultipartConfigElement(
-            // {tmpdir}/spittr/uploads
-            props.getPropValue("tmp.dir").orElse(System.getProperty("java.io.tmpdir")) + "/spittr/uploads",
-            2097152,
-            4194304,
-            0
-        ));
+        new MultipartConfigElement(TMP_LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD));
   }
 
 }

@@ -1,5 +1,6 @@
 package org.drpsy.spittr.data.mongo.documents;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ import org.springframework.security.core.userdetails.User;
  * Created by drpsy on 14-Jan-18 (12:04).
  */
 @Document
-public class Spittr {
+public class Spittr implements Serializable {
 
   @NotNull(groups = StepOne.class)
   @Size(min = 5, max = 50, message = "{username.size}", groups = StepOne.class)

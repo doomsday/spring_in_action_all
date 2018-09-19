@@ -2,17 +2,16 @@ package org.drpsy.spittr.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.drpsy.spittr.messaging.SpittleAlertHandler;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,43 +24,59 @@ public class MessagingConfig {
 
   private static final Logger LOGGER = LogManager.getLogger(MessagingConfig.class);
 
-  private static final String topicExchangeName = "spring.spittle.exchange";
-  private static final String queueName = "spittle.queue";
-  private static final String routingKey = "spittle.alerts.#";
+  @Value("${exchange.name}")
+  private String exchangeName;
+
+  @Value("${spittle.queue.name}")
+  private String spittleQueueName;
+
+  @Value("${spittr.queue.name}")
+  private String spittrQueueName;
+
+  @Value("${spittle.routing.key}")
+  private String spittleRoutingKey;
+
+  @Value("${spittr.routing.key}")
+  private String spittrRoutingKey;
 
   @Bean
-  public RabbitTemplate rabbitTemplate(){
+  public RabbitTemplate rabbitTemplate() {
     RabbitTemplate rabbitTemplate = new RabbitTemplate();
     rabbitTemplate.setConnectionFactory(connectionFactory());
-    rabbitTemplate.setExchange(topicExchangeName);
-    rabbitTemplate.setRoutingKey(routingKey);
+    rabbitTemplate.setExchange(exchangeName);
     return rabbitTemplate;
   }
 
   /*
-  This queue must be created in RabbitMQ Management Console!
-   */
+  Exchanges must be must be created and bound to spittleQueue (with corresponding routing key)
+  in RabbitMQ Management Console!
+ */
   @Bean
-  Queue queue() {
-    return new Queue(queueName, true);
+  TopicExchange exchange() {
+    return new TopicExchange(exchangeName);
   }
 
   /*
-  Exchange must be must be created and bound to queue (with corresponding routing key) in RabbitMQ Management Console!
+  This queues must be created in RabbitMQ Management Console!
    */
   @Bean
-  TopicExchange exchange() {
-    return new TopicExchange(topicExchangeName);
+  Queue spittleQueue() {
+    return new Queue(spittleQueueName, true);
   }
 
   @Bean
-  Binding binding(Queue queue, TopicExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+  Queue spittrQueue() {
+    return new Queue(spittrQueueName, true);
   }
 
   @Bean
-  MessageListenerAdapter listenerAdapter(SpittleAlertHandler receiver) {
-    return new MessageListenerAdapter(receiver, "handleSpittleAlert");
+  Binding spittleBinding() {
+    return BindingBuilder.bind(spittleQueue()).to(exchange()).with(spittleRoutingKey);
+  }
+
+  @Bean
+  Binding spittrBinding() {
+    return BindingBuilder.bind(spittrQueue()).to(exchange()).with(spittrRoutingKey);
   }
 
   @Bean
@@ -73,12 +88,12 @@ public class MessagingConfig {
   }
 
   @Bean
-  SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-    container.setConnectionFactory(connectionFactory);
-    container.setQueueNames(queueName);
-    container.setMessageListener(listenerAdapter);
-    return container;
+  public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
+    SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+    factory.setConnectionFactory(connectionFactory());
+    factory.setConcurrentConsumers(10);
+    factory.setMaxConcurrentConsumers(20);
+    return factory;
   }
 
 }
