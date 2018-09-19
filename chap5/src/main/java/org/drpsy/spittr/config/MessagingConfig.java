@@ -1,78 +1,84 @@
 package org.drpsy.spittr.config;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Session;
-import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.drpsy.spittr.messaging.SpittleAlertHandler;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.SimpleMessageConverter;
-import org.springframework.jms.support.destination.DestinationResolver;
-import org.springframework.jms.support.destination.DynamicDestinationResolver;
 
 /**
  * Created by drpsy on 23-Aug-18 (23:52).
  */
 @Configuration
-@EnableJms
+@EnableRabbit
 public class MessagingConfig {
 
-  private static final Logger LOG = LogManager.getLogger(MessagingConfig.class);
+  private static final Logger LOGGER = LogManager.getLogger(MessagingConfig.class);
 
-  @Autowired
-  private Environment environment;
-
-  @Bean
-  public ActiveMQConnectionFactory connectionFactory() {
-    ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
-    factory.setTrustAllPackages(true);
-    return factory;
-  }
+  private static final String topicExchangeName = "spring.spittle.exchange";
+  private static final String queueName = "spittle.queue";
+  private static final String routingKey = "spittle.alerts.#";
 
   @Bean
-  public JmsTemplate jmsTemplate() {
-    JmsTemplate jmsTemplate = new JmsTemplate();
-    jmsTemplate.setConnectionFactory(connectionFactory());  // To know how to get connections to the message broker
-    jmsTemplate.setDefaultDestinationName("spittle.alert.queue");
-    jmsTemplate.setMessageConverter(new SimpleMessageConverter());
-    return jmsTemplate;
+  public RabbitTemplate rabbitTemplate(){
+    RabbitTemplate rabbitTemplate = new RabbitTemplate();
+    rabbitTemplate.setConnectionFactory(connectionFactory());
+    rabbitTemplate.setExchange(topicExchangeName);
+    rabbitTemplate.setRoutingKey(routingKey);
+    return rabbitTemplate;
   }
 
-  @Bean
-  public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
-    DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-    factory.setConnectionFactory(connectionFactory());
-    factory.setDestinationResolver(destinationResolver(environment));
-    factory.setConcurrency("1");
-    factory.setSessionTransacted(true);
-    factory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
-    return factory;
-  }
-
-  /**
-   * Uses properties to attempt to map a JMS destination name to an actual queue/topic name.
-   *
-   * @return
+  /*
+  This queue must be created in RabbitMQ Management Console!
    */
   @Bean
-  public DestinationResolver destinationResolver(Environment environment) {
-    return new DestinationResolver() {
-      private DestinationResolver dynamicDestinationResolver = new DynamicDestinationResolver();
+  Queue queue() {
+    return new Queue(queueName, true);
+  }
 
-      @Override
-      public Destination resolveDestinationName(Session session, String destinationName, boolean pubSubDomain) throws JMSException {
-        String dName = environment.getProperty("jms.destination." + destinationName, destinationName);
-        LOG.info("Destination name \'" + destinationName + "\' resolved to: \'" + dName + "\'");
-        return dynamicDestinationResolver.resolveDestinationName(session, dName, pubSubDomain);
-      }
-    };
+  /*
+  Exchange must be must be created and bound to queue (with corresponding routing key) in RabbitMQ Management Console!
+   */
+  @Bean
+  TopicExchange exchange() {
+    return new TopicExchange(topicExchangeName);
+  }
+
+  @Bean
+  Binding binding(Queue queue, TopicExchange exchange) {
+    return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+  }
+
+  @Bean
+  MessageListenerAdapter listenerAdapter(SpittleAlertHandler receiver) {
+    return new MessageListenerAdapter(receiver, "handleSpittleAlert");
+  }
+
+  @Bean
+  public ConnectionFactory connectionFactory() {
+    CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
+    connectionFactory.setUsername("guest");
+    connectionFactory.setPassword("guest");
+    return connectionFactory;
+  }
+
+  @Bean
+  SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+    container.setConnectionFactory(connectionFactory);
+    container.setQueueNames(queueName);
+    container.setMessageListener(listenerAdapter);
+    return container;
   }
 
 }
