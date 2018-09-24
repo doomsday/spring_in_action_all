@@ -17,4 +17,9 @@ public class HomeController {
     return "home";
   }
 
+  @RequestMapping(value = "/socket_chat", method = GET)
+  public String websocket() {
+    return "socket_chat";
+  }
+
 }

@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Spittr WebSocket</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/resources/js/websocket_chat.js}"></script>
+    <style type="text/css">
+        #content {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header" th:include="page :: header"></div>
+
+<div id="content">
+    <h1>WebSocket Messages</h1>
+
+    <label for="msg_reply">Message Reply</label>
+    <textarea id="msg_reply" cols="40" rows="5"></textarea>
+    <br/>
+    <label for="msg_input">Message Input</label>
+    <textarea id="msg_input" cols="40" rows="5"></textarea>
+    <br/>
+    <button id="msg_button" onclick="sendMsg()">Send</button>
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
+
+</body>

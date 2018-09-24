@@ -16,6 +16,7 @@
 
     <a th:href="@{/spittles}">Spittles</a>    <!-- th:href links to pages -->
     <a th:href="@{/spittr/register}">| Register</a>
+    <a th:href="@{/socket_chat}">| Websocket Chat</a>
     <a sec:authorize="!isAuthenticated()" th:href="@{/auth/login}">| Login</a>
     <a sec:authorize="isAuthenticated()" href="javascript: document.logoutForm.submit()" role="menuitem">| Logout</a>
 

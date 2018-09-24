@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "websocket_chat.js",
+  "sourceRoot": "",
+  "sources": [
+    "websocket_chat.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,IAAA,EAAA;;EAAA,GAAA,GAAM,CAAA,KAAA,CAAA,CAAQ,MAAM,CAAC,QAAQ,CAAC,IAAxB,CAA6B,gBAA7B;;EACN,IAAA,GAAO,IAAI,SAAJ,CAAc,GAAd;;EAEP,IAAC,CAAA,OAAD,GAAW,QAAA,CAAA,CAAA;IACT,OAAO,CAAC,GAAR,CAAY,oBAAZ;WACA,IAAI,CAAC,IAAL,CAAU,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC,KAA/C;EAFS;;EAIX,IAAI,CAAC,MAAL,GAAc,QAAA,CAAA,CAAA;WACZ,OAAO,CAAC,GAAR,CAAY,sBAAZ;EADY;;EAGd,IAAI,CAAC,OAAL,GAAe,QAAA,CAAA,CAAA;WACb,OAAO,CAAC,GAAR,CAAY,sBAAZ;EADa;;EAGf,IAAI,CAAC,SAAL,GAAiB,QAAA,CAAC,CAAD,CAAA;IACf,OAAO,CAAC,GAAR,CAAY,oBAAZ,EAAkC,CAAC,CAAC,IAApC;WACA,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC,KAArC,GAA6C,CAAC,CAAC;EAFhC;AAbjB",
+  "sourcesContent": [
+    "url = \"ws://#{window.location.host}/chap_five/marco\"\nsock = new WebSocket(url)\n\n@sendMsg = ->\n  console.log 'Sending message...'\n  sock.send document.getElementById('msg_input').value\n\nsock.onopen = ->\n  console.log 'WebSocket opening...'\n\nsock.onclose = ->\n  console.log 'WebSocket closing...'\n\nsock.onmessage = (e) ->\n  console.log 'Received message: ', e.data\n  document.getElementById('msg_reply').value = e.data"
+  ]
+}
