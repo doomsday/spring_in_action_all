@@ -17,7 +17,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 /**
  * Created by drpsy on 06-Apr-18 (21:40).
  *
- * Enables Spring's support for annotation driven caching.
+ * Enables Spring's support for annotation driven caching (e.g. @Cacheable). Creates an aspect with pointcuts that
+ * trigger off of.
+ * Spring's caching annotations.
  */
 @Configuration
 @EnableCaching
@@ -40,6 +42,12 @@ public class CachingConfig {
     return jedisConnectionFactory;
   }
 
+  /**
+   * Cache managers are the heart of Spring’s cache abstraction, enabling integration with one of several popular
+   * caching implementations.
+   * @param connectionFactory
+   * @return
+   */
   @Bean
   public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 

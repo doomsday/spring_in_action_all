@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * Created by drpsy on 14-Jan-18 (12:31).
  *
  * In case you need to authenticate against users in a non-relational database you'll need to implement a custom
- * implementation of the UserDetailsService interface that returns a UserDetails object representing the given user
+ * implementation of the UserDetailsService interface that returns a UserDetails object representing the given user.
  */
 @Component
 public class SecUserDetailsService implements UserDetailsService {

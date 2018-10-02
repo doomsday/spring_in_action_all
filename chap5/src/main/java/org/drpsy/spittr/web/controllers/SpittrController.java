@@ -53,7 +53,7 @@ public class SpittrController {
   @RequestMapping(value = "/register", method = GET)
   public String showRegistrationForm(Model model) {
     model.addAttribute(new Spittr());  // Model key will be inferred from the object type: "spittr".
-    return "registerForm";
+    return "register_form";
   }
 
   // This object has firstName, lastName, username, and password properties that
@@ -73,7 +73,7 @@ public class SpittrController {
 
     // Validation.
     if (errors.hasErrors()) {
-      return "registerForm";  // Return back to the form on validation errors.
+      return "register_form";  // Return back to the form on validation errors.
     }
 
     if (spittrRepository.findByUsername(spittr.getUsername()) != null) {
