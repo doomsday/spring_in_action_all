@@ -74,9 +74,21 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
   // Serve static resources.
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry
-        .addResourceHandler("resources/**") // External facing URI path...
-        .addResourceLocations("/resources/"); // map it to the physical path where the resources are actually located.
+
+    if (!registry.hasMappingForPattern("/resources/**")) {
+      registry
+          // External facing URI path...
+          .addResourceHandler("resources/**")
+          // map it to the physical path where the resources are actually located.
+          .addResourceLocations("/resources/");
+    }
+
+    if (!registry.hasMappingForPattern("/webjars/**")) {
+      registry.addResourceHandler("/webjars/**")
+          .addResourceLocations("/webjars/")
+          .resourceChain(false);
+    }
+
   }
 
   // Loads messages from a properties file whose name is derived from a base name.

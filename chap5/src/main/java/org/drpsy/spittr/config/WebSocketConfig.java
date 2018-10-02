@@ -15,15 +15,14 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-  @Bean
-  public WebSocketChatHandler marcoHandler() {
-    return new WebSocketChatHandler();
-  }
-
+  /**
+   * Registers message handlers.
+   * @param webSocketHandlerRegistry
+   */
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
     // Map WebSocketChatHandler to "/marco"
-    webSocketHandlerRegistry.addHandler(marcoHandler(), "/marco");
+    webSocketHandlerRegistry.addHandler(new WebSocketChatHandler(), "/marco");
   }
 
 }
