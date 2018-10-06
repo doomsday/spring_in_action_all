@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.0.5.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-rest-webmvc -->
@@ -63,6 +63,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-websocket</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-messaging</artifactId>
       <version>${spring.version}</version>
     </dependency>
 
@@ -241,6 +248,48 @@
       <groupId>org.webjars.npm</groupId>
       <artifactId>clr__ui</artifactId>
       <version>LATEST</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.webjars/stomp-websocket -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>stomp-websocket</artifactId>
+      <version>2.3.3-1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.webjars/sockjs-client -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>sockjs-client</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.webjars/handlebars -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>handlebars</artifactId>
+      <version>4.0.11-1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.30.Final</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-core -->
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.2.0.RELEASE</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.projectreactor.ipc/reactor-netty -->
+    <dependency>
+      <groupId>io.projectreactor.ipc</groupId>
+      <artifactId>reactor-netty</artifactId>
+      <version>0.7.9.RELEASE</version>
     </dependency>
 
   </dependencies>

@@ -51,6 +51,7 @@ label.error {
 
 #footer {
   padding: 20px 0 20px 10px; /* Top Right Bottom Left */
+  margin-top: 20px;
   background-color: #e7e8ea;
   font-size: small;
 }
@@ -61,4 +62,37 @@ label.error {
 
 #new_spittle {
   padding: 20px 0 20px 10px; /* Top Right Bottom Left */
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* chat_stomp.html */
+
+#stomp-test {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#stomp-content {
+  display: flex;
+  flex-direction: row;
+}
+
+#div-l, #div-r, #div-p {
+  flex-direction: column;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid;
+  margin: 10px 10px 10px 10px;
+}
+
+#button_area {
+  flex-direction: row;
+  align-items: stretch;
+  padding-top: 30px;
 }

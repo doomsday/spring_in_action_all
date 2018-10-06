@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "stomp_person_message.js",
+  "sourceRoot": "",
+  "sources": [
+    "stomp_person_message.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,MAAA,EAAA;;EAAA,MAAA,GAAS,IAAI,MAAJ,CAAW,iCAAX,EAAT;;;EAGA,MAAA,GAAS,KAAK,CAAC,IAAN,CAAW,MAAX,EAHT;;;EAMA,MAAM,CAAC,OAAP,CAAe,OAAf,EAAwB,OAAxB,EAAiC,QAAA,CAAC,KAAD,CAAA;IAC/B,OAAO,CAAC,GAAR,CAAY,aAAA,GAAgB,KAA5B;WACA,MAAM,CAAC,SAAP,CAAiB,6BAAjB,EAAgD,QAAA,CAAC,QAAD,CAAA;AAC9C,UAAA;MAAA,KAAA,GAAQ,IAAI,CAAC,KAAL,CAAW,QAAQ,CAAC,IAApB,CAAyB,CAAC;aAClC,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC,KAArC,GAA6C;IAFC,CAAhD;EAF+B,CAAjC;;EAMA,IAAC,CAAA,QAAD,GAAY,QAAA,CAAA,CAAA;AACV,QAAA;IAAA,OAAO,CAAC,GAAR,CAAY,8CAAZ;IACA,OAAA,GAAU,IAAI,CAAC,SAAL,CAAe;MAAC,SAAA,EAAW,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC;IAAjD,CAAf;WACV,MAAM,CAAC,IAAP,CAAY,uBAAZ,EAAqC,CAAA,CAArC,EAAyC,OAAzC;EAHU;AAZZ",
+  "sourcesContent": [
+    "socket = new SockJS '/chap_five/stomp_person_message'\n\n# Effectively wraps SockJS to send STOMP messages over the WebSocket connection.\nclient = Stomp.over socket\n\n# Subscribes to '/user/topic/stomp_pers_echo' [@SendToUser(\"/topic/stomp_pers_echo\")]\nclient.connect 'guest', 'guest', (frame) ->\n  console.log 'Connected: ' + frame\n  client.subscribe '/user/topic/stomp_pers_echo', (greeting) ->\n    value = JSON.parse(greeting.body).message\n    document.getElementById('msg_reply').value = value\n\n@sendMsg2 = ->\n  console.log 'Sending message to \\'/app/stomp_pers_shout\\''\n  payload = JSON.stringify({'message': document.getElementById('msg_input').value})\n  client.send '/app/stomp_pers_shout', {}, payload"
+  ]
+}

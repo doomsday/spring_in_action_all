@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "stomp_spittle_person_feed.js",
+  "sourceRoot": "",
+  "sources": [
+    "stomp_spittle_person_feed.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,MAAA,EAAA,aAAA,EAAA;;EAAA,IAAA,GAAO,IAAI,MAAJ,CAAW,gCAAX;;EACP,MAAA,GAAS,KAAK,CAAC,IAAN,CAAW,IAAX;;EAET,MAAM,CAAC,OAAP,CAAe,OAAf,EAAwB,OAAxB,EAAiC,QAAA,CAAC,KAAD,CAAA;WAC/B,MAAM,CAAC,SAAP,CAAiB,iCAAjB,EAAoD,aAApD;EAD+B,CAAjC;;EAGA,aAAA,GAAgB,QAAA,CAAC,QAAD,CAAA;AACd,QAAA,IAAA,EAAA,MAAA,EAAA,MAAA,EAAA,OAAA,EAAA,WAAA,EAAA;IAAA,OAAA,GAAU,IAAI,CAAC,KAAL,CAAW,QAAQ,CAAC,IAApB;IACV,IAAA,GAAO,IAAI,IAAJ,CAAS,OAAO,CAAC,IAAjB;IACP,MAAA,GAAS,MAAM,CAAC,SAAS,CAAC,SAAU,CAAA,CAAA;IACpC,OAAO,CAAC,IAAR,GAAe,CAAA,CAAA,CAAG,IAAI,CAAC,kBAAL,CAAwB,MAAxB,CAAH,EAAA,CAAA,CAAsC,IAAI,CAAC,kBAAL,CAAwB,MAAxB,CAAtC,CAAA;IACf,MAAA,GAAS,QAAQ,CAAC,cAAT,CAAwB,kBAAxB,CAA2C,CAAC;IACrD,QAAA,GAAW,UAAU,CAAC,OAAX,CAAmB,MAAnB;IACX,WAAA,GAAc,QAAA,CAAS,OAAT;IACd,QAAA,GAAW,QAAQ,CAAC,aAAT,CAAuB,UAAvB;IACR,WAAW,CAAC,IAAf,CAAA;IACA,QAAQ,CAAC,SAAT,GAAqB;WACrB,QAAQ,CAAC,cAAT,CAAwB,mBAAxB,CAA4C,CAAC,WAA7C,CAAyD,QAAQ,CAAC,OAAO,CAAC,UAAW,CAAA,CAAA,CAArF;EAXc;AANhB",
+  "sourcesContent": [
+    "sock = new SockJS '/chap_five/stomp_person_spittr'\r\nclient = Stomp.over sock\r\n\r\nclient.connect 'guest', 'guest', (frame) ->\r\n  client.subscribe '/user/topic/spittle_person_feed', handleSpittle\r\n\r\nhandleSpittle = (incoming) ->\r\n  spittle = JSON.parse incoming.body\r\n  date = new Date(spittle.time)\r\n  locale = window.navigator.languages[0];\r\n  spittle.time = \"#{date.toLocaleDateString(locale)} #{date.toLocaleTimeString(locale)}\"\r\n  source = document.getElementById('spittle-template').innerHTML\r\n  template = Handlebars.compile source\r\n  spittleHtml = template spittle\r\n  template = document.createElement('template')\r\n  do spittleHtml.trim\r\n  template.innerHTML = spittleHtml\r\n  document.getElementById('spittle-pers-list').appendChild(template.content.childNodes[1])"
+  ]
+}

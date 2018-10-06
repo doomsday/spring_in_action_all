@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Spittr STOMP</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/clr__ui/clr-ui.min.css}"/>
+    <script type="application/javascript" th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script type="application/javascript" th:src="@{/webjars/handlebars/handlebars.min.js}"></script>
+    <script type="application/javascript" th:src="@{/resources/js/stomp_chat.js}"></script>
+    <script type="application/javascript" th:src="@{/resources/js/stomp_person_message.js}"></script>
+    <script type="application/javascript" th:src="@{/resources/js/stomp_spittle_feed.js}"></script>
+    <script type="application/javascript" th:src="@{/resources/js/stomp_spittle_person_feed.js}"></script>
+    <script id="spittle-template" type="text/x-handlebars-template">
+        <li>
+            <div class="spittleMessage">{{message}}</div>
+            <div>
+                <span class="spittleTime">{{time}}</span>
+            </div>
+        </li>
+    </script>
+</head>
+<body>
+
+<div id="header" th:include="page :: header"></div>
+
+<div id="stomp-test">
+
+    <div id="stomp-content">
+        <div id="div-l">
+            <h1>STOMP Messages</h1>
+            <label for="msg_reply">Message Reply</label>
+            <textarea id="msg_reply" cols="40" rows="5"></textarea>
+            <br/>
+            <label for="msg_input">Message Input</label>
+            <textarea id="msg_input" cols="40" rows="5"></textarea>
+            <br/>
+        </div>
+        <div id="div-r">
+            <h1>STOMP Spittles Feed</h1>
+            <div id="spittle-list">
+            </div>
+        </div>
+        <div id="div-p">
+            <h1>STOMP User Spittles Feed</h1>
+            <div id="spittle-pers-list">
+            </div>
+        </div>
+    </div>
+
+    <div id="button_area">
+        <button id="msg_button" onclick="sendMsg0()">Send [/app/stomp_shout]</button>
+        <button id="msg_button_1" onclick="sendMsg1()">Subscribe to [/app/stomp_shout]</button>
+        <button id="msg_button_2" onclick="sendMsg2()">Send [/user/app/stomp_pers_shout]</button>
+    </div>
+
+</div>
+
+
+
+<div id="footer" th:include="page :: footer"></div>
+
+</body>

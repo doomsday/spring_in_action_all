@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "stomp_chat.js",
+  "sourceRoot": "",
+  "sources": [
+    "stomp_chat.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,MAAA,EAAA;;EAAA,MAAA,GAAS,IAAI,MAAJ,CAAW,uBAAX,EAAT;;;EAGA,MAAA,GAAS,KAAK,CAAC,IAAN,CAAW,MAAX,EAHT;;;EAMA,MAAM,CAAC,OAAP,CAAe,OAAf,EAAwB,OAAxB,EAAiC,QAAA,CAAC,KAAD,CAAA;IAC/B,OAAO,CAAC,GAAR,CAAY,aAAA,GAAgB,KAA5B;WACA,MAAM,CAAC,SAAP,CAAiB,mBAAjB,EAAsC,QAAA,CAAC,QAAD,CAAA;AACpC,UAAA;MAAA,KAAA,GAAQ,IAAI,CAAC,KAAL,CAAW,QAAQ,CAAC,IAApB,CAAyB,CAAC;aAClC,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC,KAArC,GAA6C;IAFT,CAAtC;EAF+B,CAAjC,EANA;;;EAaA,IAAC,CAAA,QAAD,GAAY,QAAA,CAAA,CAAA;AACV,QAAA;IAAA,OAAO,CAAC,GAAR,CAAY,yCAAZ;IACA,OAAA,GAAU,IAAI,CAAC,SAAL,CAAe;MAAC,SAAA,EAAW,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC;IAAjD,CAAf;WACV,MAAM,CAAC,IAAP,CAAY,kBAAZ,EAAgC,CAAA,CAAhC,EAAoC,OAApC;EAHU,EAbZ;;;EAmBA,IAAC,CAAA,QAAD,GAAY,QAAA,CAAA,CAAA;IACV,OAAO,CAAC,GAAR,CAAY,qCAAZ;WACA,MAAM,CAAC,SAAP,CAAiB,kBAAjB,EAAqC,QAAA,CAAC,QAAD,CAAA;AACnC,UAAA;MAAA,KAAA,GAAQ,IAAI,CAAC,KAAL,CAAW,QAAQ,CAAC,IAApB,CAAyB,CAAC;aAClC,QAAQ,CAAC,cAAT,CAAwB,WAAxB,CAAoC,CAAC,KAArC,GAA6C;IAFV,CAArC;EAFU;AAnBZ",
+  "sourcesContent": [
+    "socket = new SockJS '/chap_five/stomp_chat'\n\n# Effectively wraps SockJS to send STOMP messages over the WebSocket connection.\nclient = Stomp.over socket\n\n# Subscribes to '/topic/stomp_echo' [@SendTo(\"/topic/stomp_echo\")]\nclient.connect 'guest', 'guest', (frame) ->\n  console.log 'Connected: ' + frame\n  client.subscribe '/topic/stomp_echo', (greeting) ->\n    value = JSON.parse(greeting.body).message\n    document.getElementById('msg_reply').value = value\n\n# Send message to /app/stomp_shout [@MessageMapping(\"/stomp_shout\")]\n@sendMsg0 = ->\n  console.log 'Sending message to \\'/app/stomp_shout\\''\n  payload = JSON.stringify({'message': document.getElementById('msg_input').value})\n  client.send '/app/stomp_shout', {}, payload\n\n# Subscribe to '/app/stomp_shout'\n@sendMsg1 = ->\n  console.log 'Subscribing to \\'/app/stomp_shout\\''\n  client.subscribe '/app/stomp_shout', (greeting) ->\n    value = JSON.parse(greeting.body).message\n    document.getElementById('msg_reply').value = value"
+  ]
+}

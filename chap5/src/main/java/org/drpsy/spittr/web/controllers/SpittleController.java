@@ -10,6 +10,7 @@ import org.drpsy.spittr.data.repositories.neo4j.SpittleNeo4jRepositoryWrapper;
 import org.drpsy.spittr.data.repositories.neo4j.SpittrNeo4jRepository;
 import org.drpsy.spittr.web.SpittleForm;
 import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
+import org.drpsy.spittr.web.services.SpittleFeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/spittles")
 public class SpittleController {
+
+  @Autowired
+  private SpittleFeedService spittleFeedService;
 
   @Autowired
   private SpittleNeo4jRepositoryWrapper spittleRepository;
@@ -86,9 +90,12 @@ public class SpittleController {
       throw new UsernameNotFoundException(username);
     }
 
-    spittleRepository.save(
-        new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude(), currentSpittr)
-    );
+    Spittle spittle = new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude(),
+        currentSpittr);
+
+    spittleRepository.save(spittle);
+    spittleFeedService.broadcastSpittle(spittle);
+
     return "redirect:/spittles";
   }
 
