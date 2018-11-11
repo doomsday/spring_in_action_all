@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Spittr</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<div id="header" th:include="page :: header"></div>
+
+<div id="content">
+
+    <h1>Spring E-mail Test</h1>
+
+    <form method="post" enctype="application/x-www-form-urlencoded" th:action="@{/email_send/send}" th:object="${emailForm}">
+        <label for="email-message">Message Text</label>
+        <input id="email-message" th:field="*{emailMessage}"/><br/>
+        <label for="email-address">Address</label>
+        <input id="email-address" th:field="*{destAddress}"/><br>
+
+        <input type="submit" value="Send"/>
+    </form>
+
+</div>
+
+<div id="footer" th:include="page :: footer"></div>
+
+</body>

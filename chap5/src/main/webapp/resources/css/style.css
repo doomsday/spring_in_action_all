@@ -8,7 +8,11 @@ h1 {
   font-weight: bold;
 }
 
-.spittleMessage {
+ul {
+  list-style-type: none;
+}
+
+.spittle-message {
   font-size: medium;
   display: inline-block;
 }
@@ -19,9 +23,12 @@ h1 {
   border: 2px solid #dddddd;
 }
 
-.spittleTime {
+.spittle-time {
   font-size: small;
-  margin-left: 22px;
+}
+
+.spittle-location {
+  font-size: small;
 }
 
 div.errors {
