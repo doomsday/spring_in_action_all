@@ -1,5 +1,8 @@
 package org.drpsy.spittr.config;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.drpsy.spittr.web.controllers.SpittleController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -8,6 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
+import org.springframework.jmx.export.MBeanExporter;
+import org.springframework.jmx.export.assembler.MBeanInfoAssembler;
+import org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -126,6 +132,30 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
   @Bean
   public MultipartResolver multipartResolver() {
     return new StandardServletMultipartResolver();
+  }
+
+  //================================================================================
+  // JMX
+  //================================================================================
+
+  // Include only those methods in the MBean’s interface. MBean info assembler is the key
+  // to constraining which operations and attributes are exported in an MBean
+  @Bean
+  public MethodNameBasedMBeanInfoAssembler assembler() {
+    MethodNameBasedMBeanInfoAssembler assembler = new MethodNameBasedMBeanInfoAssembler();
+    assembler.setManagedMethods("getSpittlesPerPage", "setSpittlesPerPage");
+    return assembler;
+  }
+
+  // MBeanExporter
+  @Bean
+  public MBeanExporter mBeanExporter(SpittleController spittleController) {
+    MBeanExporter exporter = new MBeanExporter();
+    Map<String, Object> beans = new HashMap<>();
+    beans.put("spitter:name=SpittleController", spittleController);
+    exporter.setBeans(beans);
+    exporter.setAssembler(assembler());
+    return exporter;
   }
 
 }

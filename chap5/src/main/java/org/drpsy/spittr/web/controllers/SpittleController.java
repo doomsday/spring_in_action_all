@@ -21,17 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-// JPA version
-//import org.drpsy.spittr.data.repositories.jpa.SpittleRepository;
-//import org.drpsy.spittr.data.entities.Spittle;
-// MongoDB version
-
 /**
  * Created by drpsy on 11-Nov-17 (16:37).
  */
 @Controller
 @RequestMapping("/spittles")
 public class SpittleController {
+
+  private static final int DEFAULT_SPITTLES_PER_PAGE = 20;
+  private int spittlesPerPage = DEFAULT_SPITTLES_PER_PAGE;
 
   @Autowired
   private SpittleMongoRepository spittleRepository;
@@ -44,8 +42,10 @@ public class SpittleController {
   @RequestMapping(method = GET)
   public String spittles(
       @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "count", defaultValue = "20") int count,
+      @RequestParam(value = "count", defaultValue = "-1") Integer count,
       Model model) {
+
+    count = (count == -1) ? spittlesPerPage : count;
 
     Page<Spittle> spittles = spittleRepository.findAll(PageRequest.of(page, count));
 
@@ -88,7 +88,8 @@ public class SpittleController {
   public @ResponseBody
   List<Spittle> spittles(
       @RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "count", defaultValue = "20") int count) {
+      @RequestParam(value = "count", defaultValue = "-1") Integer count) {
+    count = (count == -1) ? spittlesPerPage : count;
     return spittleRepository.findAll(PageRequest.of(page, count)).getContent();
   }
 
@@ -96,6 +97,18 @@ public class SpittleController {
   @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
   public @ResponseBody Spittle saveSpittle(@RequestBody Spittle spittle) {
     return spittleRepository.save(spittle);
+  }
+
+  //================================================================================
+  // JMX
+  //================================================================================
+
+  public int getSpittlesPerPage() {
+    return spittlesPerPage;
+  }
+
+  public void setSpittlesPerPage(int spittlesPerPage) {
+    this.spittlesPerPage = spittlesPerPage;
   }
 
 }
