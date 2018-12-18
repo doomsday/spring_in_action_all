@@ -2,6 +2,7 @@ package org.drpsy.spittr.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.drpsy.spittr.jmx.SpittleControllerManagedOperations;
 import org.drpsy.spittr.web.controllers.SpittleController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -12,8 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.jmx.export.MBeanExporter;
-import org.springframework.jmx.export.assembler.MBeanInfoAssembler;
-import org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler;
+import org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -138,12 +138,14 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
   // JMX
   //================================================================================
 
-  // Include only those methods in the MBean’s interface. MBean info assembler is the key
-  // to constraining which operations and attributes are exported in an MBean
+  // Include only those methods in the MBean's interface. MBean info assembler is the key
+  // to constraining which operations and attributes are exported in an MBean.
+  // Use interfaces to pick and choose which methods on a bean are exported as MBean-managed operations
   @Bean
-  public MethodNameBasedMBeanInfoAssembler assembler() {
-    MethodNameBasedMBeanInfoAssembler assembler = new MethodNameBasedMBeanInfoAssembler();
-    assembler.setManagedMethods("getSpittlesPerPage", "setSpittlesPerPage");
+  public InterfaceBasedMBeanInfoAssembler assembler() {
+    InterfaceBasedMBeanInfoAssembler assembler = new InterfaceBasedMBeanInfoAssembler();
+    // SpittleController doesn't have to explicitly implement SpittleControllerManagedOperations.
+    assembler.setManagedInterfaces(SpittleControllerManagedOperations.class);
     return assembler;
   }
 
