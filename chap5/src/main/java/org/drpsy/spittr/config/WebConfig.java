@@ -1,19 +1,14 @@
 package org.drpsy.spittr.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.drpsy.spittr.jmx.SpittleControllerManagedOperations;
-import org.drpsy.spittr.web.controllers.SpittleController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
-import org.springframework.jmx.export.MBeanExporter;
-import org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -39,6 +34,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  */
 @Configuration
 @EnableWebMvc
+@EnableMBeanExport
 @ComponentScan("org.drpsy.spittr.web")
 public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
 
@@ -132,32 +128,6 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
   @Bean
   public MultipartResolver multipartResolver() {
     return new StandardServletMultipartResolver();
-  }
-
-  //================================================================================
-  // JMX
-  //================================================================================
-
-  // Include only those methods in the MBean's interface. MBean info assembler is the key
-  // to constraining which operations and attributes are exported in an MBean.
-  // Use interfaces to pick and choose which methods on a bean are exported as MBean-managed operations
-  @Bean
-  public InterfaceBasedMBeanInfoAssembler assembler() {
-    InterfaceBasedMBeanInfoAssembler assembler = new InterfaceBasedMBeanInfoAssembler();
-    // SpittleController doesn't have to explicitly implement SpittleControllerManagedOperations.
-    assembler.setManagedInterfaces(SpittleControllerManagedOperations.class);
-    return assembler;
-  }
-
-  // MBeanExporter
-  @Bean
-  public MBeanExporter mBeanExporter(SpittleController spittleController) {
-    MBeanExporter exporter = new MBeanExporter();
-    Map<String, Object> beans = new HashMap<>();
-    beans.put("spitter:name=SpittleController", spittleController);
-    exporter.setBeans(beans);
-    exporter.setAssembler(assembler());
-    return exporter;
   }
 
 }

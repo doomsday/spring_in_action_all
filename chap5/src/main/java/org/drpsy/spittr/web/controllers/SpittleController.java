@@ -12,6 +12,8 @@ import org.drpsy.spittr.web.exceptions.SpittleNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/spittles")
+@ManagedResource(objectName="spitter:name=SpittleController")
 public class SpittleController {
 
   private static final int DEFAULT_SPITTLES_PER_PAGE = 20;
@@ -103,10 +106,12 @@ public class SpittleController {
   // JMX
   //================================================================================
 
+  @ManagedAttribute
   public int getSpittlesPerPage() {
     return spittlesPerPage;
   }
 
+  @ManagedAttribute
   public void setSpittlesPerPage(int spittlesPerPage) {
     this.spittlesPerPage = spittlesPerPage;
   }
