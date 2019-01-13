@@ -1,14 +1,19 @@
 package org.drpsy.spittr.config;
 
+import java.net.MalformedURLException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.MediaType;
+import org.springframework.jmx.support.ConnectorServerFactoryBean;
+import org.springframework.jmx.support.MBeanServerConnectionFactoryBean;
+import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -128,6 +133,43 @@ public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
   @Bean
   public MultipartResolver multipartResolver() {
     return new StandardServletMultipartResolver();
+  }
+
+  /*  JMX Remote */
+
+  // Exposing remote MBeans
+
+  // ConnectorServerFactoryBean creates and starts a JSR-160 JMXConnectorServer.
+  @Bean
+  @DependsOn("rmiRegistryFB")
+  public ConnectorServerFactoryBean connectorServerFactoryBean() {
+    // Default address: "service:jmx:jmxmp://localhost:9875".
+    ConnectorServerFactoryBean csfb = new ConnectorServerFactoryBean();
+    // Change default address.
+    csfb.setServiceUrl(
+        "service:jmx:rmi://localhost/jndi/rmi://localhost:1099/spitter");
+    return csfb;
+  }
+
+  // You may have several remoting protocol options to choose from, including Remote Method Invocation (RMI),
+  // SOAP, Hessian/Burlap, and even Internet InterORB Protocol (IIOP). In this example, we use RMI registry running and
+  // listening at 1099.
+  @Bean
+  public RmiRegistryFactoryBean rmiRegistryFB() {
+    RmiRegistryFactoryBean rmiRegistryFB = new RmiRegistryFactoryBean();
+    rmiRegistryFB.setPort(1099);
+    return rmiRegistryFB;
+  }
+
+  // Accessing remote MBeans
+
+  // Bean than can be used to access the RMI-based remote server you created in the previous section.
+  // It is a factory bean, that creates an MBeanServerConnection which acts as a local proxy to the remote MBean server.
+  @Bean
+  public MBeanServerConnectionFactoryBean connectionFactoryBean() throws MalformedURLException {
+    MBeanServerConnectionFactoryBean mbscfb = new MBeanServerConnectionFactoryBean();
+    mbscfb.setServiceUrl("service:jmx:rmi://localhost/jndi/rmi://localhost:1099/spitter");
+    return mbscfb;
   }
 
 }
